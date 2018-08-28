@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -18,16 +20,18 @@ import lombok.Data;
 
 @Entity
 @Table(name = "pin")
-@IdClass(value = PinId.class)
 @Data
 public class Pin {
-
-	@Id
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private ControlModule controlModule;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "pin_id")
+	private int id;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
+	private ControlModule controlModule;
+	
 	@Column(name = "pin_number")
 	private int number;
 	
@@ -57,7 +61,7 @@ public class Pin {
 	private List<PowerCondition> powerConditions;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pid_control_id")
+	@JoinColumn(name = "pid_control_id", referencedColumnName = "pin_id")
 	private PIDControl pidControl;
 
 	@Override
@@ -69,12 +73,7 @@ public class Pin {
 		if (getClass() != obj.getClass())
 			return false;
 		Pin other = (Pin) obj;
-		if (controlModule == null) {
-			if (other.controlModule != null)
-				return false;
-		} else if (!controlModule.equals(other.controlModule))
-			return false;
-		if (number != other.number)
+		if (id != other.id)
 			return false;
 		return true;
 	}
@@ -83,9 +82,9 @@ public class Pin {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((controlModule == null) ? 0 : controlModule.hashCode());
-		result = prime * result + number;
+		result = prime * result + id;
 		return result;
 	}
+
 	
 }

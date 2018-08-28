@@ -16,5 +16,4 @@ public interface ServiceServer<T> {
 	public List<T> get(List<Filter> filters) throws DAOException, PermissionException;
 	public T get(Map<String, Object> primaryKey) throws DAOException, PermissionException;
 	
-	public void detach(T t);
 }

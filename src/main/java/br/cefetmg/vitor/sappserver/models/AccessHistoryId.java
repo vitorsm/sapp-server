@@ -6,6 +6,6 @@ import java.util.Date;
 public class AccessHistoryId implements Serializable {
 
 	private Date time;
-	private int id;
+	private int doorLock;
 	
 }

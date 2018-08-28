@@ -1,5 +1,8 @@
 package br.cefetmg.vitor.sappserver.models;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,20 +11,27 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.CascadeType;
 
 import lombok.Data;
 
-@Entity
 @Table(name = "user")
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+//@IdClass(value = UserId.class)
 @Data
-public class User {
+public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +50,7 @@ public class User {
 	@ManyToMany(
 			cascade = {
 				CascadeType.ALL
-			}, 
+			},
 			fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "user_has_permission",
@@ -59,6 +69,50 @@ public class User {
 			cascade = CascadeType.ALL)
 	private List<RFIdCard> rfIdCards;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "created_by")
+	private User createdBy;
+	
+	@Column(name = "created_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+//	public void setPermissionsByIntList(List<Integer> intPermissions) {
+//		permissions = new ArrayList<Permission>();
+//		
+//		if (intPermissions != null) {
+//			for (Integer permissionId : intPermissions) {
+//				Permission permission = new Permission();
+//			}
+//		}
+//	}
+	
+	public List<Integer> getIntListPermissions() {
+	
+		List<Integer> intPermissions = new ArrayList<Integer>();
+		
+		if (this.permissions != null) {
+			for (Permission permission : this.permissions) {
+				intPermissions.add(permission.getId());
+			}
+		}
+		
+		return intPermissions;
+	}
+	
+	public boolean hasPermission(int permissionId) {
+		
+		if (permissions != null) {
+			for (Permission p : permissions) {
+				if (p.getId() == permissionId) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

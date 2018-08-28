@@ -14,8 +14,47 @@ import lombok.Data;
 @Data
 public class Permission {
 
+	final public static int INSERT_ACCESS_HISTORY = 1;
+	final public static int MANAGE_ACCESS_HISTORY = 2;
+	final public static int LIST_ACCESS_HISTORY = 3;
+	
+	final public static int MANAGE_MODULE_CONTROL = 4;
+	final public static int LIST_MODULE_CONTROL = 5;
+	
+	final public static int MANAGE_DOOR_LOCK = 6;
+	final public static int LIST_DOOR_LOCK = 7;
+	
+	final public static int MANAGE_EVENT = 8;
+	final public static int LIST_EVENT = 9;
+	
+	final public static int INSERT_PIN_HISTORY = 10;
+	final public static int MANAGE_PIN_HISTORY = 11;
+	final public static int LIST_PIN_HISTORY = 12;
+	
+	final public static int MANAGE_PLACE = 13;
+	final public static int LIST_PLACE = 14;
+	
+	final public static int MANAGE_RFID_CARD = 15;
+	final public static int LIST_RFID_CARD = 16;
+	
+	final public static int MANAGE_USER = 17;
+	final public static int LIST_USER = 18;
+	
+	public Permission() {
+		
+	}
+	
+	public Permission(int id) {
+		this.id = id;
+	}
+	
+	public Permission(int id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private int id;
 	

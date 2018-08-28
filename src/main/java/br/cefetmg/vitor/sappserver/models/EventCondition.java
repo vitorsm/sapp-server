@@ -28,15 +28,20 @@ public class EventCondition {
 	private OperationType operationType;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-		@JoinColumn(name = "input_pin_number",
-				referencedColumnName = "input_pin_number",
-				nullable = false),
-		@JoinColumn(name = "input_module_control",
-				referencedColumnName = "input_module_control",
-				nullable = false)
-	})
+//	@JoinColumns({
+//		@JoinColumn(name = "input_pin_number",
+//				referencedColumnName = "input_pin_number",
+//				nullable = false),
+//		@JoinColumn(name = "input_module_control",
+//				referencedColumnName = "input_module_control",
+//				nullable = false)
+//	})
+	@JoinColumn(name = "input_pin_id", referencedColumnName = "pin_id", nullable = false)
 	private Pin input;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "event_id", nullable = false)
+	private Event event;
 	
 	@Column(name = "value", nullable = false)
 	private float value;

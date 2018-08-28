@@ -24,14 +24,15 @@ public class PinHistory {
 
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-		@JoinColumn(name = "pin_number",
-				referencedColumnName = "pin_number",
-				nullable = false),
-		@JoinColumn(name = "module_control",
-				referencedColumnName = "module_control",
-				nullable = false)
-	})
+//	@JoinColumns({
+//		@JoinColumn(name = "pin_number",
+//				referencedColumnName = "pin_number",
+//				nullable = false),
+//		@JoinColumn(name = "module_control",
+//				referencedColumnName = "module_control",
+//				nullable = false)
+//	})
+	@JoinColumn(name = "pin_id", nullable = false)
 	private Pin pin;
 	
 	@Id

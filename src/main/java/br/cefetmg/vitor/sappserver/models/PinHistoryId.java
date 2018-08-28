@@ -6,6 +6,6 @@ import java.util.Date;
 public class PinHistoryId implements Serializable {
 
 	private Date time;
-	private PinId pinId;
+	private PinId pin;
 	
 }
