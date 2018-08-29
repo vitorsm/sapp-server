@@ -21,7 +21,7 @@ import lombok.Data;
 @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "user_id")
 //@IdClass(value = UserId.class)
 @Data
-public class ControlModule extends User  implements Serializable {
+public class ControlModule extends User implements Serializable {
 	
 	@Column(name = "description")
 	private String description;

@@ -1,5 +1,6 @@
 package br.cefetmg.vitor.sappserver.models;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -52,7 +55,29 @@ public class DoorLock {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "place_id", nullable = false)
 	private Place place;
-
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User createdBy;
+	
+	@Column(name = "created_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@Column(name = "modified_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date modifiedAt;
+	
+	
+	public void setCreatedAt(Date createdAt) {
+		
+		this.createdAt = createdAt;
+		
+		if (this.modifiedAt == null)
+			this.modifiedAt = createdAt;
+		
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

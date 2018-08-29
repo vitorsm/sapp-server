@@ -33,9 +33,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		
+		httpSecurity.cors().and().csrf().disable();
+		httpSecurity.headers().frameOptions().sameOrigin();
 		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/").permitAll()
 				.antMatchers(HttpMethod.OPTIONS).permitAll()
 				.antMatchers("/h2/**").permitAll()
+				.antMatchers("/h2-console/**").permitAll()
 //				.antMatchers("/h2").permitAll()
 //				.antMatchers("/h2*/").permitAll()
 //				.antMatchers("/h2*").permitAll()
@@ -53,18 +56,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //				.antMatchers("/h2/query.jsp*").permitAll()
 //				.antMatchers("/h2/tables.do*").permitAll()
 				
-				//.antMatchers("/serv/init").permitAll()
+				.antMatchers("/serv/init").permitAll()
 				.antMatchers(HttpMethod.POST, "/serv/auth/authenticate").permitAll().anyRequest().authenticated().and()
-				.headers().addHeaderWriter(new HeaderWriter() {
-					@Override
-					public void writeHeaders(HttpServletRequest request, HttpServletResponse response) {
-						response.addHeader("Access-Control-Allow-Origin", allowOrigin);
-						response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-						response.addHeader("Access-Control-Allow-Headers", "X-Auth-Token");
-						//response.addHeader("Access-Control-Allow-Headers", "X-Frame-Options");
-						response.addHeader("Access-Control-Allow-Credentials", "true");
-					}
-				}).and()
+//				.headers().addHeaderWriter(new HeaderWriter() {
+//					@Override
+//					public void writeHeaders(HttpServletRequest request, HttpServletResponse response) {
+//						response.addHeader("Access-Control-Allow-Origin", allowOrigin);
+//						response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+//						response.addHeader("Access-Control-Allow-Headers", "X-Auth-Token");
+//						//response.addHeader("Access-Control-Allow-Headers", "X-Frame-Options");
+//						response.addHeader("Access-Control-Allow-Credentials", "true");
+//					}
+//				}).and()
 				.addFilterBefore(new JWTLoginFilter("/serv/auth/authenticate", sf.authenticateService),
 						UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -79,6 +82,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
+		return new MD5PasswordEncoder();
 	}
 }

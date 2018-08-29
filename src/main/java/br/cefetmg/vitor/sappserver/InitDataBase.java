@@ -1,12 +1,10 @@
 package br.cefetmg.vitor.sappserver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.cefetmg.vitor.sappserver.dao.impl.PermissionDAO;
@@ -14,6 +12,7 @@ import br.cefetmg.vitor.sappserver.dao.impl.UserDAO;
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.models.Permission;
 import br.cefetmg.vitor.sappserver.models.User;
+import br.cefetmg.vitor.sappserver.security.MD5PasswordEncoder;
 
 @Service
 public class InitDataBase {
@@ -24,9 +23,6 @@ public class InitDataBase {
 	@Autowired
 	private UserDAO userDAO;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
 	public void initDataBase() throws DAOException {
 	
 		List<Permission> permissions = insertPermissions();
@@ -36,9 +32,12 @@ public class InitDataBase {
 	
 	public void insertAdminUser(List<Permission> permissions) throws DAOException {
 		
+		MD5PasswordEncoder passwordEncoder = new MD5PasswordEncoder();
+		String encripytedPass = passwordEncoder.encode("admin");
+		
 		User user = new User();
 		user.setLogin("admin");
-		user.setPassword(passwordEncoder.encode("admin"));
+		user.setPassword(encripytedPass);
 		user.setName("Administrator");
 		user.setPermissions(permissions);
 		user.setCreatedAt(new Date());

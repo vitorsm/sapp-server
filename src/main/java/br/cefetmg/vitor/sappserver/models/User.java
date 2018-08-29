@@ -77,15 +77,20 @@ public class User implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 	
-//	public void setPermissionsByIntList(List<Integer> intPermissions) {
-//		permissions = new ArrayList<Permission>();
-//		
-//		if (intPermissions != null) {
-//			for (Integer permissionId : intPermissions) {
-//				Permission permission = new Permission();
-//			}
-//		}
-//	}
+	@Column(name = "modified_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date modifiedAt;
+	
+	
+	
+	public void setCreatedAt(Date createdAt) {
+		
+		this.createdAt = createdAt;
+		
+		if (this.modifiedAt == null)
+			this.modifiedAt = createdAt;
+		
+	}
 	
 	public List<Integer> getIntListPermissions() {
 	

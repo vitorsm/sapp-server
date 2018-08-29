@@ -51,7 +51,11 @@ public class Event {
 
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date createAt;
+	private Date createdAt;
+	
+	@Column(name = "modified_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date modifiedAt;
 	
 	@OneToMany(mappedBy = "event",
 			cascade = CascadeType.ALL,
@@ -59,6 +63,16 @@ public class Event {
 			fetch = FetchType.LAZY)
 	private List<EventCondition> eventConditions;
 
+	
+	public void setCreatedAt(Date createdAt) {
+		
+		this.createdAt = createdAt;
+		
+		if (this.modifiedAt == null)
+			this.modifiedAt = createdAt;
+		
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

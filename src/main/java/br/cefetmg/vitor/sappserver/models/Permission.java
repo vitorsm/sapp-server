@@ -55,7 +55,7 @@ public class Permission {
 	
 	@Id
 	//@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@Column(name = "permission_id")
 	private int id;
 	
 	@Column(name = "name", nullable = false)

@@ -1,5 +1,6 @@
 package br.cefetmg.vitor.sappserver.models;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -63,7 +66,29 @@ public class Pin {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pid_control_id", referencedColumnName = "pin_id")
 	private PIDControl pidControl;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "created_by", nullable = false)
+	private User createdBy;
+	
+	@Column(name = "created_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@Column(name = "modified_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date modifiedAt;
 
+	
+	public void setCreatedAt(Date createdAt) {
+		
+		this.createdAt = createdAt;
+		
+		if (this.modifiedAt == null)
+			this.modifiedAt = createdAt;
+		
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

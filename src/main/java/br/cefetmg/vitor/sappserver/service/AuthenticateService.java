@@ -19,6 +19,7 @@ import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.User;
+import br.cefetmg.vitor.sappserver.security.MD5PasswordEncoder;
 
 @Service
 public class AuthenticateService implements AuthenticationManager {
@@ -56,14 +57,18 @@ public class AuthenticateService implements AuthenticationManager {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		
 		String password = "";
+		
+		MD5PasswordEncoder encoder = new MD5PasswordEncoder();
+		
 		if (authentication.getCredentials() != null) {
 			password = encoder.encode(authentication.getCredentials().toString());
 			
-			User account = (User) authentication.getPrincipal();
-			account.setPassword(password);
+			User user = (User) authentication.getPrincipal();
 			
+			user.setPassword(password);
+			System.out.println(user);
 			try {
-				if (auth(account)) {
+				if (auth(user)) {
 					return authentication;
 				}	
 			} catch (DAOException ex) {

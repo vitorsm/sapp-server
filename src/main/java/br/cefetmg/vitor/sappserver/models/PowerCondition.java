@@ -1,5 +1,7 @@
 package br.cefetmg.vitor.sappserver.models;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -45,6 +49,28 @@ public class PowerCondition {
 //	})
 	@JoinColumn(name = "pin_id", referencedColumnName = "pin_id")
 	private Pin pin;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "created_by", nullable = false)
+	private User createdBy;
+	
+	@Column(name = "created_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@Column(name = "modified_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date modifiedAt;
+	
+	
+	public void setCreatedAt(Date createdAt) {
+		
+		this.createdAt = createdAt;
+		
+		if (this.modifiedAt == null)
+			this.modifiedAt = createdAt;
+		
+	}
 
 	@Override
 	public boolean equals(Object obj) {

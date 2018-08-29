@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.cefetmg.vitor.sappserver.dao.Filter;
@@ -25,6 +26,9 @@ public class UserService implements ServiceServer<User> {
 	@Autowired
 	private SAPPFacade sf;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public void insert(User t) throws DAOException, PermissionException {
 		
@@ -33,6 +37,12 @@ public class UserService implements ServiceServer<User> {
 		if (currentUser == null || !currentUser.hasPermission(Permission.MANAGE_USER)) {
 			throw new PermissionException("The current user does not have permission to insert user.");
 		}
+	
+		if (t.getPassword() == null) {
+			throw new DAOException();
+		}
+		
+		t.setPassword(passwordEncoder.encode(t.getPassword()));
 		
 		dao.insert(t);
 		

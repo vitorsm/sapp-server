@@ -4,8 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import br.cefetmg.vitor.sappserver.controller.mapper.MapperFacade;
+import br.cefetmg.vitor.sappserver.models.OperationType;
 import br.cefetmg.vitor.sappserver.service.AccessHistoryService;
 import br.cefetmg.vitor.sappserver.service.AuthenticateService;
+import br.cefetmg.vitor.sappserver.service.ControlModuleService;
+import br.cefetmg.vitor.sappserver.service.DoorLockService;
+import br.cefetmg.vitor.sappserver.service.EventService;
+import br.cefetmg.vitor.sappserver.service.PIDControlService;
+import br.cefetmg.vitor.sappserver.service.PermissionService;
+import br.cefetmg.vitor.sappserver.service.PinHistoryService;
+import br.cefetmg.vitor.sappserver.service.PinService;
+import br.cefetmg.vitor.sappserver.service.PinTypeService;
+import br.cefetmg.vitor.sappserver.service.PlaceService;
+import br.cefetmg.vitor.sappserver.service.PowerConditionService;
+import br.cefetmg.vitor.sappserver.service.RFIdCardService;
 import br.cefetmg.vitor.sappserver.service.UserService;
 
 @Service
@@ -13,11 +26,50 @@ import br.cefetmg.vitor.sappserver.service.UserService;
 public class SAPPFacade {
 
 	@Autowired
-	public static AccessHistoryService accessHistoryService;
+	public AccessHistoryService accessHistoryService;
 	
 	@Autowired
-	public static AuthenticateService authenticateService;
+	public AuthenticateService authenticateService;
 	
 	@Autowired
-	public static UserService userService;
+	public ControlModuleService controlModuleService;
+	
+	@Autowired
+	public DoorLockService doorLockService;
+	
+	@Autowired
+	public EventService eventService;
+	
+	@Autowired
+	public MapperFacade mf;
+	
+	@Autowired
+	public OperationType operationTypeService;
+	
+	@Autowired
+	public PermissionService permissionService;
+	
+	@Autowired
+	public PIDControlService pidControleService;
+	
+	@Autowired
+	public PinHistoryService pinHistoryService;
+	
+	@Autowired
+	public PinService pinService;
+	
+	@Autowired
+	public PinTypeService pinTypeService;
+	
+	@Autowired
+	public PlaceService placeService;
+	
+	@Autowired
+	public PowerConditionService powerConditionService;
+	
+	@Autowired
+	public RFIdCardService rfIdCardService;
+	
+	@Autowired
+	public UserService userService;
 }

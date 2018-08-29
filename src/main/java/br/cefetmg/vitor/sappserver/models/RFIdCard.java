@@ -16,13 +16,13 @@ import javax.persistence.TemporalType;
 import lombok.Data;
 
 @Entity
-@Table(name = "rf-id_card")
+@Table(name = "rfid_card")
 @Data
 public class RFIdCard {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "rf-id_card_id")
+	@Column(name = "rfid_card_id")
 	private int id;
 	
 	@Column(name = "description")
@@ -42,7 +42,21 @@ public class RFIdCard {
 	@Column(name = "created_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+	
+	@Column(name = "modified_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date modifiedAt;
 
+	
+	public void setCreatedAt(Date createdAt) {
+		
+		this.createdAt = createdAt;
+		
+		if (this.modifiedAt == null)
+			this.modifiedAt = createdAt;
+		
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
