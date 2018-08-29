@@ -1,5 +1,6 @@
 package br.cefetmg.vitor.sappserver.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,4 +46,11 @@ public class PinTypeService implements ServiceServer<PinType> {
 		return dao.get(primaryKey, PinType.class);
 	}
 
+	public PinType findById(int id) throws DAOException, PermissionException {
+		
+		Map<String, Object> pk = new HashMap<String, Object>();
+		pk.put("id", id);
+		
+		return this.get(pk);
+	}
 }

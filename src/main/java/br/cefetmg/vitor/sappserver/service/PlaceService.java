@@ -1,6 +1,7 @@
 package br.cefetmg.vitor.sappserver.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,4 +90,11 @@ public class PlaceService implements ServiceServer<Place> {
 		return dao.get(primaryKey, Place.class);
 	}
 
+	public Place findById(int id) throws DAOException, PermissionException {
+		
+		Map<String, Object> pk = new HashMap<String, Object>();
+		pk.put("id", id);
+		
+		return this.get(pk);
+	}
 }

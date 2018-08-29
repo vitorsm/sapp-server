@@ -8,6 +8,7 @@ import lombok.Data;
 public class PowerConditionDTO {
 
 	private int id;
+	private int pinId;
 	private OperationTypeDTO operationType;
 	private float value;
 	private PinDTO input;

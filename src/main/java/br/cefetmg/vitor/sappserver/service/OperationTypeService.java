@@ -1,5 +1,6 @@
 package br.cefetmg.vitor.sappserver.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,14 @@ public class OperationTypeService implements ServiceServer<OperationType> {
 	public OperationType get(Map<String, Object> primaryKey) throws DAOException, PermissionException {
 
 		return dao.get(primaryKey, OperationType.class);
+	}
+	
+	public OperationType findById(int id) throws DAOException, PermissionException {
+		
+		Map<String, Object> pk = new HashMap<String, Object>();
+		pk.put("id", id);
+		
+		return this.get(pk);
 	}
 
 }

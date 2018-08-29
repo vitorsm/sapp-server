@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 public class PIDControlDTO implements Serializable {
 
+	private int pinId;
 	private float kp;
 	private float ki;
 	private float kd;

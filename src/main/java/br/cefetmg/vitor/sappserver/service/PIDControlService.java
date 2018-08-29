@@ -1,6 +1,7 @@
 package br.cefetmg.vitor.sappserver.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,4 +90,11 @@ public class PIDControlService implements ServiceServer<PIDControl> {
 		return dao.get(primaryKey, PIDControl.class);
 	}
 
+	public PIDControl findById(int pinId) throws DAOException, PermissionException {
+		
+		Map<String, Object> pk = new HashMap<String, Object>();
+		pk.put("pin", pinId);
+		
+		return this.get(pk);
+	}
 }

@@ -10,7 +10,9 @@ import br.cefetmg.vitor.sappserver.service.AccessHistoryService;
 import br.cefetmg.vitor.sappserver.service.AuthenticateService;
 import br.cefetmg.vitor.sappserver.service.ControlModuleService;
 import br.cefetmg.vitor.sappserver.service.DoorLockService;
+import br.cefetmg.vitor.sappserver.service.EventConditionService;
 import br.cefetmg.vitor.sappserver.service.EventService;
+import br.cefetmg.vitor.sappserver.service.OperationTypeService;
 import br.cefetmg.vitor.sappserver.service.PIDControlService;
 import br.cefetmg.vitor.sappserver.service.PermissionService;
 import br.cefetmg.vitor.sappserver.service.PinHistoryService;
@@ -38,13 +40,16 @@ public class SAPPFacade {
 	public DoorLockService doorLockService;
 	
 	@Autowired
+	public EventConditionService eventConditionService;
+	
+	@Autowired
 	public EventService eventService;
 	
 	@Autowired
 	public MapperFacade mf;
 	
 	@Autowired
-	public OperationType operationTypeService;
+	public OperationTypeService operationTypeService;
 	
 	@Autowired
 	public PermissionService permissionService;

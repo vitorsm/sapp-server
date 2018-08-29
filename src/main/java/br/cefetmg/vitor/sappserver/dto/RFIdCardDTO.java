@@ -8,6 +8,7 @@ import lombok.Data;
 public class RFIdCardDTO {
 
 	private int id;
+	private int userId;
 	private String description;
 	private int number;
 	private UserDTO createdBy;

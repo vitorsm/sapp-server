@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class PinDTO {
 	
+	private int controlModuleId;
 	private int id;
 	private int number;
 	private String name;

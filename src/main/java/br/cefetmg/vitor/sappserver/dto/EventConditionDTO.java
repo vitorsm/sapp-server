@@ -9,6 +9,7 @@ import lombok.Data;
 public class EventConditionDTO {
 
 	private int id;
+	private int eventId;
 	private OperationTypeDTO operationType;
 	private PinDTO input;
 	private float value;
