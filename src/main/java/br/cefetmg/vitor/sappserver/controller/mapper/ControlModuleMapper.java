@@ -18,24 +18,30 @@ public class ControlModuleMapper extends Mapper<ControlModule, ControlModuleDTO>
 	
 	@Override
 	public ControlModule mapToObj(ControlModuleDTO dto) throws PermissionException {
+		if (dto == null) return null;
+		
+		ControlModule obj = null;
 		
 		if (dto.getId() != 0) {
 			try {
-				return sf.controlModuleService.findById(dto.getId());
+				obj = sf.controlModuleService.findById(dto.getId());
 			} catch (DAOException e) {
 				throw new IllegalArgumentException(e);
 			}
+		} else {
+			obj = new ControlModule();
 		}
 		
-		ControlModule obj = new ControlModule();
 		obj.setDescription(dto.getDescription());
 		obj.setLogin(dto.getLogin());
 		obj.setName(dto.getName());
-		obj.setPassword(dto.getPassword());
 		obj.setPermissions(sf.mf.permissionMapper.mapToObj(dto.getPermissions()));
 		obj.setPins(sf.mf.pinMapper.mapToObj(dto.getPins()));
 		obj.setPlace(sf.mf.placeMapper.mapToObj(dto.getPlace()));
 		obj.setRfIdCards(sf.mf.rfIdCardMapper.mapToObj(dto.getRfIdCards()));
+		
+		if (dto.getPassword() != null)
+			obj.setPassword(dto.getPassword());
 		
 		return obj;
 	}
@@ -47,7 +53,7 @@ public class ControlModuleMapper extends Mapper<ControlModule, ControlModuleDTO>
 		
 		ControlModuleDTO dto = new ControlModuleDTO();
 		dto.setCreatedAt(obj.getCreatedAt());
-		dto.setCreatedBy(sf.mf.userMapper.mapToDto(obj.getCreatedBy()));
+		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setDescription(obj.getDescription());
 		dto.setId(obj.getId());
 		dto.setLogin(obj.getLogin());

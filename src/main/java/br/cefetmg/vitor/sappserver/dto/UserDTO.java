@@ -15,7 +15,7 @@ public class UserDTO {
 	private String password;
 	private List<PermissionDTO> permissions;
 	private List<RFIdCardDTO> rfIdCards;
-	private UserDTO createdBy;
+	private ReducedUserDTO createdBy;
 	private Date createdAt;
 	private Date modifiedAt;
 	

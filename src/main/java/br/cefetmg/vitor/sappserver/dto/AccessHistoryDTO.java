@@ -9,7 +9,6 @@ public class AccessHistoryDTO {
 
 	private Date time;
 	private DoorLockDTO doorLock;
-	private UserDTO user;
-
+	private ReducedUserDTO user;
 	
 }

@@ -17,7 +17,8 @@ public class EventMapper extends Mapper<Event, EventDTO>{
 	
 	@Override
 	public Event mapToObj(EventDTO dto) throws PermissionException {
-
+		if (dto == null) return null;
+		
 		if (dto.getId() != 0) {
 			try {
 				return sf.eventService.findById(dto.getId());
@@ -40,11 +41,12 @@ public class EventMapper extends Mapper<Event, EventDTO>{
 
 	@Override
 	public EventDTO mapToDto(Event obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		EventDTO dto = new EventDTO();
 		dto.setActive(obj.isActive());
 		dto.setCreatedAt(obj.getCreatedAt());
-		dto.setCreatedBy(sf.mf.userMapper.mapToDto(obj.getCreatedBy()));
+		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setDescription(obj.getDescription());
 		dto.setEventConditions(sf.mf.eventConditionMapper.mapToDto(obj.getEventConditions()));
 		dto.setGroupType(obj.getGroupType());

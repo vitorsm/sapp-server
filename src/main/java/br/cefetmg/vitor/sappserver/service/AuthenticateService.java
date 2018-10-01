@@ -53,6 +53,21 @@ public class AuthenticateService implements AuthenticationManager {
 		return false;
 	}
 	
+	public User authenticateUser(String login, String password) throws DAOException {
+		
+		Filter<String> fLogin = new Filter<String>("login", login);
+		Filter<String> fPassword = new Filter<String>("password", password);
+		
+		List<User> list = dao.get(Arrays.asList(fLogin, fPassword));
+
+		if (list != null && list.size() > 0) {
+			return list.get(0);
+		}
+		
+		throw new AuthenticationCredentialsNotFoundException("Bad credentials");
+	}
+	
+	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		

@@ -11,7 +11,7 @@ public class RFIdCardDTO {
 	private int userId;
 	private String description;
 	private int number;
-	private UserDTO createdBy;
+	private ReducedUserDTO createdBy;
 	private Date createdAt;
 	private Date modifiedAt;
 	

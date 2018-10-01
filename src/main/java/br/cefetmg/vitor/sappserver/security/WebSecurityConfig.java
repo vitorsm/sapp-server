@@ -39,35 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.OPTIONS).permitAll()
 				.antMatchers("/h2/**").permitAll()
 				.antMatchers("/h2-console/**").permitAll()
-//				.antMatchers("/h2").permitAll()
-//				.antMatchers("/h2*/").permitAll()
-//				.antMatchers("/h2*").permitAll()
-//				.antMatchers("/h2/*").permitAll()
-//				.antMatchers("/h2/.*").permitAll()
-				//.antMatchers("/h2/login.do").permitAll()
-				//.antMatchers("/h2/login.do*").permitAll()
-//				.antMatchers("/h2/header.jsp").permitAll()
-//				.antMatchers("/h2/help.jsp").permitAll()
-//				.antMatchers("/h2/query.jsp").permitAll()
-//				.antMatchers("/h2/tables.do").permitAll()
-//				
-//				.antMatchers("/h2/header.jsp*").permitAll()
-//				.antMatchers("/h2/help.jsp*").permitAll()
-//				.antMatchers("/h2/query.jsp*").permitAll()
-//				.antMatchers("/h2/tables.do*").permitAll()
-				
 				.antMatchers("/serv/init").permitAll()
 				.antMatchers(HttpMethod.POST, "/serv/auth/authenticate").permitAll().anyRequest().authenticated().and()
-//				.headers().addHeaderWriter(new HeaderWriter() {
-//					@Override
-//					public void writeHeaders(HttpServletRequest request, HttpServletResponse response) {
-//						response.addHeader("Access-Control-Allow-Origin", allowOrigin);
-//						response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-//						response.addHeader("Access-Control-Allow-Headers", "X-Auth-Token");
-//						//response.addHeader("Access-Control-Allow-Headers", "X-Frame-Options");
-//						response.addHeader("Access-Control-Allow-Credentials", "true");
-//					}
-//				}).and()
 				.addFilterBefore(new JWTLoginFilter("/serv/auth/authenticate", sf.authenticateService),
 						UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

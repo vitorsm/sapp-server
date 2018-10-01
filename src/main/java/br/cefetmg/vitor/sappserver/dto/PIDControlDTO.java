@@ -14,7 +14,7 @@ public class PIDControlDTO implements Serializable {
 	private float kd;
 	private long sampleTime;
 	private PinDTO input;
-	private UserDTO createdBy;
+	private ReducedUserDTO createdBy;
 	private Date createdAt;
 	private Date modifiedAt;
 	

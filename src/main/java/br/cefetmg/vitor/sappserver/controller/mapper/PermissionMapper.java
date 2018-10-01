@@ -17,6 +17,7 @@ public class PermissionMapper extends Mapper<Permission, PermissionDTO>{
 	
 	@Override
 	public Permission mapToObj(PermissionDTO dto) throws PermissionException {
+		if (dto == null) return null;
 		
 		try {
 			return sf.permissionService.findById(dto.getId());
@@ -28,6 +29,7 @@ public class PermissionMapper extends Mapper<Permission, PermissionDTO>{
 
 	@Override
 	public PermissionDTO mapToDto(Permission obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		return sf.mf.modelMapper.map(obj, PermissionDTO.class);
 	}

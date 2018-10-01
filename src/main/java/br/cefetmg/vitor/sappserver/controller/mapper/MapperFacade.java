@@ -50,6 +50,12 @@ public class MapperFacade {
 	public PowerConditionMapper powerConditionMapper;
 	
 	@Autowired
+	public ReducedPlaceMapper reducedPlaceMapper;
+	
+	@Autowired
+	public ReducedUserMapper reducedUserMapper;
+	
+	@Autowired
 	public RFIdCardMapper rfIdCardMapper;
 	
 	@Autowired

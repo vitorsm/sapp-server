@@ -17,6 +17,7 @@ public class DoorLockMapper extends Mapper<DoorLock, DoorLockDTO>{
 	
 	@Override
 	public DoorLock mapToObj(DoorLockDTO dto) throws PermissionException {
+		if (dto == null) return null;
 		
 		if (dto.getId() != 0) {
 			try {
@@ -37,10 +38,11 @@ public class DoorLockMapper extends Mapper<DoorLock, DoorLockDTO>{
 
 	@Override
 	public DoorLockDTO mapToDto(DoorLock obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		DoorLockDTO dto = new DoorLockDTO();
 		dto.setCreatedAt(obj.getCreatedAt());
-		dto.setCreatedBy(sf.mf.userMapper.mapToDto(obj.getCreatedBy()));
+		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setId(obj.getId());
 		dto.setKeepOpen(obj.isKeepOpen());
 		dto.setModifiedAt(obj.getModifiedAt());

@@ -12,7 +12,7 @@ public class PowerConditionDTO {
 	private OperationTypeDTO operationType;
 	private float value;
 	private PinDTO input;
-	private UserDTO createdBy;
+	private ReducedUserDTO createdBy;
 	private Date createdAt;
 	private Date modifiedAt;
 	

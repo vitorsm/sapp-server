@@ -11,8 +11,8 @@ public class PlaceDTO {
 	private String name;
 	private String description;
 	private float area;
-	private PlaceDTO parentPlace;
-	private UserDTO createdBy;
+	private ReducedPlaceDTO parentPlace;
+	private ReducedUserDTO createdBy;
 	private Date createdAt;
 	private Date modifiedAt;
 	

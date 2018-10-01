@@ -20,7 +20,7 @@ public class PinDTO {
 	private float setPoint;
 	private List<PowerConditionDTO> powerConditions;
 	private PIDControlDTO pidControl;
-	private UserDTO createdBy;
+	private ReducedUserDTO createdBy;
 	private Date createdAt;
 	private Date modifiedAt;
 	

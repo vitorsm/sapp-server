@@ -32,7 +32,7 @@ public class AccessHistoryMapper extends Mapper<AccessHistory, AccessHistoryDTO>
 		} else {
 			obj = new AccessHistory();
 			obj.setDoorLock(sf.mf.doorLockMapper.mapToObj(dto.getDoorLock()));
-			obj.setUser(sf.mf.userMapper.mapToObj(dto.getUser()));
+			obj.setUser(sf.mf.reducedUserMapper.mapToObj(dto.getUser()));
 			obj.setTime(new Date());
 		}
 		
@@ -47,7 +47,7 @@ public class AccessHistoryMapper extends Mapper<AccessHistory, AccessHistoryDTO>
 		AccessHistoryDTO dto = new AccessHistoryDTO();
 		dto.setDoorLock(sf.mf.doorLockMapper.mapToDto(obj.getDoorLock()));
 		dto.setTime(obj.getTime());
-		dto.setUser(sf.mf.userMapper.mapToDto(obj.getUser()));
+		dto.setUser(sf.mf.reducedUserMapper.mapToDto(obj.getUser()));
 		
 		return dto;
 	}

@@ -17,14 +17,19 @@ public class PinMapper extends Mapper<Pin, PinDTO>{
 	
 	@Override
 	public Pin mapToObj(PinDTO dto) throws PermissionException {
-
+		if (dto == null) return null;
+		
 		try {
 			
+			Pin obj = null;
+			
 			if (dto.getId() != 0) {
-				return sf.pinService.findById(dto.getId());
+				obj = sf.pinService.findById(dto.getId());
+			} else {
+				obj = new Pin();	
 			}
 			
-			Pin obj = new Pin();
+			
 			obj.setControlModule(sf.controlModuleService.findById(dto.getControlModuleId()));
 			obj.setDescription(dto.getDescription());
 			obj.setHistorySampleTime(dto.getHistorySampleTime());
@@ -45,11 +50,12 @@ public class PinMapper extends Mapper<Pin, PinDTO>{
 
 	@Override
 	public PinDTO mapToDto(Pin obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		PinDTO dto = new PinDTO();
 		dto.setControlModuleId(obj.getControlModule().getId());
 		dto.setCreatedAt(obj.getCreatedAt());
-		dto.setCreatedBy(sf.mf.userMapper.mapToDto(obj.getCreatedBy()));
+		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setDescription(obj.getDescription());
 		dto.setHistorySampleTime(obj.getHistorySampleTime());
 		dto.setId(obj.getId());

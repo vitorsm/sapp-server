@@ -17,6 +17,7 @@ public class EventConditionMapper extends Mapper<EventCondition, EventConditionD
 	
 	@Override
 	public EventCondition mapToObj(EventConditionDTO dto) throws PermissionException {
+		if (dto == null) return null;
 		
 		try {
 			
@@ -38,7 +39,8 @@ public class EventConditionMapper extends Mapper<EventCondition, EventConditionD
 
 	@Override
 	public EventConditionDTO mapToDto(EventCondition obj) throws PermissionException {
-
+		if (obj == null) return null;
+		
 		EventConditionDTO dto = new EventConditionDTO();
 		dto.setCreatedAt(obj.getCreatedAt());
 		dto.setId(obj.getId());

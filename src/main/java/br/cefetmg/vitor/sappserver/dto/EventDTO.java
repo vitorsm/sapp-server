@@ -13,7 +13,7 @@ public class EventDTO {
 	private String description;
 	private char groupType;
 	private boolean active;
-	private UserDTO createdBy;
+	private ReducedUserDTO createdBy;
 	private Date createdAt;
 	private Date modifiedAt;
 	private List<EventConditionDTO> eventConditions;

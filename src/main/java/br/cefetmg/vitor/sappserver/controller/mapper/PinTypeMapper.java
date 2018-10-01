@@ -17,6 +17,7 @@ public class PinTypeMapper extends Mapper<PinType, PinTypeDTO>{
 	
 	@Override
 	public PinType mapToObj(PinTypeDTO dto) throws PermissionException {
+		if (dto == null) return null;
 		
 		try {
 			return sf.pinTypeService.findById(dto.getId());
@@ -28,6 +29,7 @@ public class PinTypeMapper extends Mapper<PinType, PinTypeDTO>{
 
 	@Override
 	public PinTypeDTO mapToDto(PinType obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		return sf.mf.modelMapper.map(obj, PinTypeDTO.class);
 		

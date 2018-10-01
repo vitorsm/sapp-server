@@ -17,6 +17,7 @@ public class PinHistoryMapper extends Mapper<PinHistory, PinHistoryDTO>{
 	
 	@Override
 	public PinHistory mapToObj(PinHistoryDTO dto) throws PermissionException {
+		if (dto == null) return null;
 		
 		if (dto.getTime() != null) {
 			try {
@@ -36,6 +37,7 @@ public class PinHistoryMapper extends Mapper<PinHistory, PinHistoryDTO>{
 
 	@Override
 	public PinHistoryDTO mapToDto(PinHistory obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		PinHistoryDTO dto = new PinHistoryDTO();
 		dto.setName(obj.getName());

@@ -1,6 +1,7 @@
 package br.cefetmg.vitor.sappserver.controller.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.cefetmg.vitor.sappserver.dto.UserDTO;
@@ -8,6 +9,7 @@ import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.User;
+import br.cefetmg.vitor.sappserver.security.MD5PasswordEncoder;
 
 @Service
 public class UserMapper extends Mapper<User, UserDTO>{
@@ -15,13 +17,30 @@ public class UserMapper extends Mapper<User, UserDTO>{
 	@Autowired
 	private SAPPFacade sf;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public User mapToObj(UserDTO dto) throws PermissionException {
-
+		if (dto == null) return null;
+		
 		try {
 			
 			if (dto.getId() != 0) {
-				return sf.userService.findById(dto.getId());
+				User obj = sf.userService.findById(dto.getId());
+
+				if (obj == null) return null;
+				
+				obj.setLogin(dto.getLogin());
+				obj.setName(dto.getName());
+				obj.setPermissions(sf.mf.permissionMapper.mapToObj(dto.getPermissions()));
+				if (dto.getPassword() != null) {
+					MD5PasswordEncoder passwordEncoder = new MD5PasswordEncoder();
+					String encripytedPass = passwordEncoder.encode(dto.getPassword());
+					obj.setPassword(encripytedPass);
+				}
+				
+				return obj;
 			}
 			
 			User user = new User();
@@ -40,11 +59,12 @@ public class UserMapper extends Mapper<User, UserDTO>{
 
 	@Override
 	public UserDTO mapToDto(User obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		UserDTO dto = new UserDTO();
 		
 		dto.setCreatedAt(obj.getCreatedAt());
-		dto.setCreatedBy(sf.mf.userMapper.mapToDto(obj.getCreatedBy()));
+		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setId(obj.getId());
 		dto.setLogin(obj.getLogin());
 		dto.setModifiedAt(obj.getModifiedAt());

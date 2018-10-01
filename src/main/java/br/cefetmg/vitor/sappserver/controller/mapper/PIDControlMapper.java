@@ -17,16 +17,16 @@ public class PIDControlMapper extends Mapper<PIDControl, PIDControlDTO>{
 	
 	@Override
 	public PIDControl mapToObj(PIDControlDTO dto) throws PermissionException {
-
+		if (dto == null) return null;
+		
 		PIDControl obj = null;
 		
 		try {
 			obj = sf.pidControleService.findById(dto.getPinId());
 			
-			if (obj != null)
-				return obj;
+			if (null == null)
+				obj = new PIDControl();	
 			
-			obj = new PIDControl();
 			obj.setInput(sf.mf.pinMapper.mapToObj(dto.getInput()));
 			obj.setKd(dto.getKd());
 			obj.setKi(dto.getKi());
@@ -43,10 +43,11 @@ public class PIDControlMapper extends Mapper<PIDControl, PIDControlDTO>{
 
 	@Override
 	public PIDControlDTO mapToDto(PIDControl obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		PIDControlDTO dto = new PIDControlDTO();
 		dto.setCreatedAt(obj.getCreatedAt());
-		dto.setCreatedBy(sf.mf.userMapper.mapToDto(obj.getCreatedBy()));
+		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setInput(sf.mf.pinMapper.mapToDto(obj.getInput()));
 		dto.setKd(obj.getKd());
 		dto.setKi(obj.getKi());

@@ -14,6 +14,10 @@ import lombok.Data;
 @Data
 public class PinType {
 
+	final public static int PIN_TYPE_INPUT_ID = 1;
+	final public static int PIN_TYPE_OUTPUT_ID = 2;
+	final public static int PIN_TYPE_BINARY_OUTPUT_ID = 3;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")

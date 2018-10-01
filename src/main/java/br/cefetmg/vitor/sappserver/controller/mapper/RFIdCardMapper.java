@@ -17,6 +17,7 @@ public class RFIdCardMapper extends Mapper<RFIdCard, RFIdCardDTO>{
 	
 	@Override
 	public RFIdCard mapToObj(RFIdCardDTO dto) throws PermissionException {
+		if (dto == null) return null;
 		
 		try {
 			
@@ -37,10 +38,11 @@ public class RFIdCardMapper extends Mapper<RFIdCard, RFIdCardDTO>{
 
 	@Override
 	public RFIdCardDTO mapToDto(RFIdCard obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		RFIdCardDTO dto = new RFIdCardDTO();
 		dto.setCreatedAt(obj.getCreatedAt());
-		dto.setCreatedBy(sf.mf.userMapper.mapToDto(obj.getCreatedBy()));
+		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setDescription(obj.getDescription());
 		dto.setId(obj.getId());
 		dto.setModifiedAt(obj.getModifiedAt());

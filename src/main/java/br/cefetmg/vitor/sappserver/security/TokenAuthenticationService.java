@@ -36,11 +36,19 @@ public class TokenAuthenticationService {
 		public String token;
 	}
 	
-	static void addAuthentication(HttpServletResponse response, User user) {
+	public static String generateToken(User user) {
+		
 		String JWT = Jwts.builder().setSubject(user.getLogin() + "")
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
 		
+		
+		return JWT;
+	}
+	
+	static void addAuthentication(HttpServletResponse response, User user) {
+		
+		String JWT = generateToken(user);
 		
 		AuthUserDTO auth = new AuthUserDTO();
 		auth.setToken(JWT);
@@ -62,10 +70,7 @@ public class TokenAuthenticationService {
 		
 	}
 
-	static Authentication getAuthentication(HttpServletRequest request) {
-		
-		String token = request.getHeader(HEADER_STRING);
-
+	static Authentication getAuthenticationByToken(String token) {
 		if (token != null) {
 			
 			String user = null;
@@ -81,9 +86,15 @@ public class TokenAuthenticationService {
 			}
 
 		}
-
+		
 		return null;
+	}
+	
+	static Authentication getAuthentication(HttpServletRequest request) {
+		
+		String token = request.getHeader(HEADER_STRING);
 
+		return getAuthenticationByToken(token);
 	}
 	
 	

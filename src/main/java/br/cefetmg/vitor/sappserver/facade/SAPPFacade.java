@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import br.cefetmg.vitor.sappserver.broker.InitBroker;
 import br.cefetmg.vitor.sappserver.controller.mapper.MapperFacade;
 import br.cefetmg.vitor.sappserver.models.OperationType;
 import br.cefetmg.vitor.sappserver.service.AccessHistoryService;
@@ -77,4 +78,8 @@ public class SAPPFacade {
 	
 	@Autowired
 	public UserService userService;
+	
+	
+	@Autowired
+	public InitBroker brokerService;
 }

@@ -12,7 +12,7 @@ public class DoorLockDTO {
 	private String name;
 	private boolean keepOpen;
 	private List<UserDTO> usersPermission;
-	private UserDTO createdBy;
+	private ReducedUserDTO createdBy;
 	private Date createdAt;
 	private Date modifiedAt;
 	private PlaceDTO place;

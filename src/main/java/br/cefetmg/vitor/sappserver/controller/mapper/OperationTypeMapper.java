@@ -17,6 +17,7 @@ public class OperationTypeMapper extends Mapper<OperationType, OperationTypeDTO>
 	
 	@Override
 	public OperationType mapToObj(OperationTypeDTO dto) throws PermissionException {
+		if (dto == null) return null;
 		
 		try {
 			return sf.operationTypeService.findById(dto.getId());
@@ -27,7 +28,8 @@ public class OperationTypeMapper extends Mapper<OperationType, OperationTypeDTO>
 
 	@Override
 	public OperationTypeDTO mapToDto(OperationType obj) throws PermissionException {
-
+		if (obj == null) return null;
+		
 		return sf.mf.modelMapper.map(obj, OperationTypeDTO.class);
 		
 	}

@@ -36,6 +36,7 @@ public abstract class DAO<T> {
 	
 	public void insert(T t) throws DAOException {
 		entityManager.persist(t);
+//		entityManager.merge(t);
 	}
 	
 	public void update(T t) throws DAOException {

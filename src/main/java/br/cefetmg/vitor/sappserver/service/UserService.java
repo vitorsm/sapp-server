@@ -1,6 +1,7 @@
 package br.cefetmg.vitor.sappserver.service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.Permission;
 import br.cefetmg.vitor.sappserver.models.User;
+import br.cefetmg.vitor.sappserver.security.MD5PasswordEncoder;
 
 @Service
 public class UserService implements ServiceServer<User> {
@@ -42,7 +44,13 @@ public class UserService implements ServiceServer<User> {
 			throw new DAOException();
 		}
 		
-		t.setPassword(passwordEncoder.encode(t.getPassword()));
+		MD5PasswordEncoder passwordEncoder = new MD5PasswordEncoder();
+		String encripytedPass = passwordEncoder.encode(t.getPassword());
+		t.setPassword(encripytedPass);
+		
+		t.setCreatedAt(new Date());
+		
+//		t.setPassword(passwordEncoder.encode(t.getPassword()));
 		
 		dao.insert(t);
 		
@@ -55,6 +63,8 @@ public class UserService implements ServiceServer<User> {
 		if (currentUser == null || !currentUser.hasPermission(Permission.MANAGE_USER)) {
 			throw new PermissionException("The current user does not have permission to update user.");
 		}
+		
+		t.setModifiedAt(new Date());
 		
 		dao.update(t);
 	}
@@ -87,6 +97,7 @@ public class UserService implements ServiceServer<User> {
 		
 		return dao.get(filters);
 	}
+	
 	
 	@Override
 	public User get(Map<String, Object> primaryKey) throws DAOException, PermissionException {

@@ -18,6 +18,7 @@ public class PowerConditionMapper extends Mapper<PowerCondition, PowerConditionD
 	@Override
 	public PowerCondition mapToObj(PowerConditionDTO dto) throws PermissionException {
 		
+		if (dto == null) return null;
 		
 		try {
 			if (dto.getId() != 0) {
@@ -40,10 +41,11 @@ public class PowerConditionMapper extends Mapper<PowerCondition, PowerConditionD
 
 	@Override
 	public PowerConditionDTO mapToDto(PowerCondition obj) throws PermissionException {
+		if (obj == null) return null;
 		
 		PowerConditionDTO dto = new PowerConditionDTO();
 		dto.setCreatedAt(obj.getCreatedAt());
-		dto.setCreatedBy(sf.mf.userMapper.mapToDto(obj.getCreatedBy()));
+		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setId(obj.getId());
 		dto.setModifiedAt(obj.getModifiedAt());
 		dto.setOperationType(sf.mf.operationTypeMapper.mapToDto(obj.getOperationType()));

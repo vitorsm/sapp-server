@@ -3,20 +3,20 @@ package br.cefetmg.vitor.sappserver.controller.mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.cefetmg.vitor.sappserver.dto.PlaceDTO;
+import br.cefetmg.vitor.sappserver.dto.ReducedPlaceDTO;
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.Place;
 
 @Service
-public class PlaceMapper extends Mapper<Place, PlaceDTO>{
+public class ReducedPlaceMapper extends Mapper<Place, ReducedPlaceDTO> {
 
 	@Autowired
 	private SAPPFacade sf;
 	
 	@Override
-	public Place mapToObj(PlaceDTO dto) throws PermissionException {
+	public Place mapToObj(ReducedPlaceDTO dto) throws PermissionException {
 		if (dto == null) return null;
 		
 		Place obj = null;
@@ -28,33 +28,26 @@ public class PlaceMapper extends Mapper<Place, PlaceDTO>{
 				throw new IllegalArgumentException(e);
 			}
 		} else {
-			obj = new Place();	
+			obj = new Place();
 		}
 		
 		obj.setArea(dto.getArea());
 		obj.setDescription(dto.getDescription());
 		obj.setName(dto.getName());
-		obj.setParentPlace(sf.mf.reducedPlaceMapper.mapToObj(dto.getParentPlace()));
 		
 		return obj;
 	}
 
 	@Override
-	public PlaceDTO mapToDto(Place obj) throws PermissionException {
+	public ReducedPlaceDTO mapToDto(Place obj) throws PermissionException {
 		if (obj == null) return null;
 		
-		PlaceDTO dto = new PlaceDTO();
-		
+		ReducedPlaceDTO dto = new ReducedPlaceDTO();
 		dto.setId(obj.getId());
 		dto.setArea(obj.getArea());
-		dto.setCreatedAt(obj.getCreatedAt());
-		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setDescription(obj.getDescription());
-		dto.setModifiedAt(obj.getModifiedAt());
 		dto.setName(obj.getName());
-		dto.setParentPlace(sf.mf.reducedPlaceMapper.mapToDto(obj.getParentPlace()));
 		
 		return dto;
 	}
-
 }
