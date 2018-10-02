@@ -1,4 +1,7 @@
-package br.cefetmg.vitor.sappserver.controller.mapper;
+package br.cefetmg.vitor.sappserver.mapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +12,7 @@ import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.ControlModule;
+import br.cefetmg.vitor.sappserver.models.Pin;
 
 @Service
 public class ControlModuleMapper extends Mapper<ControlModule, ControlModuleDTO>{
@@ -32,13 +36,16 @@ public class ControlModuleMapper extends Mapper<ControlModule, ControlModuleDTO>
 			obj = new ControlModule();
 		}
 		
+		if (obj == null)
+			return null;
+		
 		obj.setDescription(dto.getDescription());
 		obj.setLogin(dto.getLogin());
 		obj.setName(dto.getName());
 		obj.setPermissions(sf.mf.permissionMapper.mapToObj(dto.getPermissions()));
-		obj.setPins(sf.mf.pinMapper.mapToObj(dto.getPins()));
 		obj.setPlace(sf.mf.placeMapper.mapToObj(dto.getPlace()));
-		obj.setRfIdCards(sf.mf.rfIdCardMapper.mapToObj(dto.getRfIdCards()));
+		obj.mergePins(sf.mf.pinMapper.mapToObj(dto.getInstruments()));
+
 		
 		if (dto.getPassword() != null)
 			obj.setPassword(dto.getPassword());
@@ -60,7 +67,7 @@ public class ControlModuleMapper extends Mapper<ControlModule, ControlModuleDTO>
 		dto.setModifiedAt(obj.getModifiedAt());
 		dto.setName(obj.getName());
 		dto.setPermissions(sf.mf.permissionMapper.mapToDto(obj.getPermissions()));
-		dto.setPins(sf.mf.pinMapper.mapToDto(obj.getPins()));
+		dto.setInstruments(sf.mf.pinMapper.mapToDto(obj.getPins()));
 		dto.setPlace(sf.mf.placeMapper.mapToDto(obj.getPlace()));
 		
 		return dto;

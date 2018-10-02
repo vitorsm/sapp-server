@@ -1,4 +1,4 @@
-package br.cefetmg.vitor.sappserver.controller.mapper;
+package br.cefetmg.vitor.sappserver.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

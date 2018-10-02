@@ -19,7 +19,7 @@ public class PIDControlDAO extends DAO<PIDControl> {
 
 	@Override
 	public List<String> getPrimaryKeys() {
-		return Arrays.asList("id");
+		return Arrays.asList("pin");
 	}
 
 }

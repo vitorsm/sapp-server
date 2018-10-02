@@ -1,4 +1,4 @@
-package br.cefetmg.vitor.sappserver.controller.mapper;
+package br.cefetmg.vitor.sappserver.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +26,11 @@ public class PinMapper extends Mapper<Pin, PinDTO>{
 			if (dto.getId() != 0) {
 				obj = sf.pinService.findById(dto.getId());
 			} else {
-				obj = new Pin();	
+				obj = new Pin();
 			}
 			
+			if (obj == null)
+				return null;
 			
 			obj.setControlModule(sf.controlModuleService.findById(dto.getControlModuleId()));
 			obj.setDescription(dto.getDescription());

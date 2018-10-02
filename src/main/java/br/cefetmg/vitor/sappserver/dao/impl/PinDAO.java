@@ -19,7 +19,7 @@ public class PinDAO extends DAO<Pin> {
 
 	@Override
 	public List<String> getPrimaryKeys() {
-		return Arrays.asList("controlModule", "number");
+		return Arrays.asList("id");
 	}
 
 }

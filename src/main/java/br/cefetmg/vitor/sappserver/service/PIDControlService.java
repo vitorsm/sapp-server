@@ -15,6 +15,7 @@ import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.PIDControl;
 import br.cefetmg.vitor.sappserver.models.Permission;
+import br.cefetmg.vitor.sappserver.models.Pin;
 import br.cefetmg.vitor.sappserver.models.User;
 
 @Service
@@ -96,5 +97,14 @@ public class PIDControlService implements ServiceServer<PIDControl> {
 		pk.put("pin", pinId);
 		
 		return this.get(pk);
+	}
+	
+	public void detach(PIDControl pidControl) {
+		dao.detach(pidControl);
+	}
+	
+	public void prepareToSave(PIDControl pidControl, User user) {
+		pidControl.setCreatedAt(new Date());
+		pidControl.setCreatedBy(user);
 	}
 }

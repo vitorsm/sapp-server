@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import br.cefetmg.vitor.sappserver.broker.InitBroker;
-import br.cefetmg.vitor.sappserver.controller.mapper.MapperFacade;
+import br.cefetmg.vitor.sappserver.mapper.MapperFacade;
 import br.cefetmg.vitor.sappserver.models.OperationType;
 import br.cefetmg.vitor.sappserver.service.AccessHistoryService;
 import br.cefetmg.vitor.sappserver.service.AuthenticateService;

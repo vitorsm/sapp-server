@@ -103,6 +103,8 @@ public class ControlModuleController {
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ControlModuleDTO>> getList() throws DAOException {
 		
 		try {

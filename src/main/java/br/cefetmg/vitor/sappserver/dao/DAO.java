@@ -42,7 +42,7 @@ public abstract class DAO<T> {
 	public void update(T t) throws DAOException {
 //		entityManager.flush();
 //		entityManager.detach(t);
-//		entityManager.clear();
+		entityManager.clear();
 		entityManager.merge(t);
 //		entityManager.persist(t);
 	}

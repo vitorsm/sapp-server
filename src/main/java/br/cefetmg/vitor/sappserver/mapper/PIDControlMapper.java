@@ -1,4 +1,4 @@
-package br.cefetmg.vitor.sappserver.controller.mapper;
+package br.cefetmg.vitor.sappserver.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +24,9 @@ public class PIDControlMapper extends Mapper<PIDControl, PIDControlDTO>{
 		try {
 			obj = sf.pidControleService.findById(dto.getPinId());
 			
-			if (null == null)
-				obj = new PIDControl();	
+			if (null == null) {
+				obj = new PIDControl();
+			}
 			
 			obj.setInput(sf.mf.pinMapper.mapToObj(dto.getInput()));
 			obj.setKd(dto.getKd());
@@ -53,7 +54,8 @@ public class PIDControlMapper extends Mapper<PIDControl, PIDControlDTO>{
 		dto.setKi(obj.getKi());
 		dto.setKp(obj.getKp());
 		dto.setModifiedAt(obj.getModifiedAt());
-		dto.setPinId(obj.getPin().getId());
+		if (obj.getPin() != null)
+			dto.setPinId(obj.getPin().getId());
 		dto.setSampleTime(obj.getSampleTime());
 		
 		return dto;

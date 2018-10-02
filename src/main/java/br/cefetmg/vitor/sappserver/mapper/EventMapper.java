@@ -1,4 +1,4 @@
-package br.cefetmg.vitor.sappserver.controller.mapper;
+package br.cefetmg.vitor.sappserver.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,15 +19,21 @@ public class EventMapper extends Mapper<Event, EventDTO>{
 	public Event mapToObj(EventDTO dto) throws PermissionException {
 		if (dto == null) return null;
 		
+		Event obj = null;
+		
 		if (dto.getId() != 0) {
 			try {
-				return sf.eventService.findById(dto.getId());
+				obj = sf.eventService.findById(dto.getId());
 			} catch (DAOException e) {
 				throw new IllegalArgumentException(e);
 			}
+		} else {
+			obj = new Event();
 		}
 		
-		Event obj = new Event();
+		if (obj == null)
+			return null;
+		
 		obj.setActive(dto.isActive());
 		obj.setDescription(dto.getDescription());
 		obj.setEventConditions(sf.mf.eventConditionMapper.mapToObj(dto.getEventConditions()));

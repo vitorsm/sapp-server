@@ -15,7 +15,7 @@ public class PinDTO {
 	private String name;
 	private String description;
 	private long historySampleTime;
-	private boolean isPowered;
+	private boolean powered;
 	private PinTypeDTO pinType;
 	private float setPoint;
 	private List<PowerConditionDTO> powerConditions;

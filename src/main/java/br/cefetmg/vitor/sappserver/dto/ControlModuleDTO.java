@@ -9,6 +9,6 @@ public class ControlModuleDTO extends UserDTO {
 	
 	private String description;
 	private PlaceDTO place;
-	private List<PinDTO> pins;
+	private List<PinDTO> instruments;
 	
 }

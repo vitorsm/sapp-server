@@ -1,52 +1,55 @@
-package br.cefetmg.vitor.sappserver.controller.mapper;
+package br.cefetmg.vitor.sappserver.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.cefetmg.vitor.sappserver.dto.EventConditionDTO;
+import br.cefetmg.vitor.sappserver.dto.PowerConditionDTO;
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
-import br.cefetmg.vitor.sappserver.models.EventCondition;
+import br.cefetmg.vitor.sappserver.models.PowerCondition;
 
 @Service
-public class EventConditionMapper extends Mapper<EventCondition, EventConditionDTO>{
+public class PowerConditionMapper extends Mapper<PowerCondition, PowerConditionDTO>{
 
 	@Autowired
 	private SAPPFacade sf;
 	
 	@Override
-	public EventCondition mapToObj(EventConditionDTO dto) throws PermissionException {
+	public PowerCondition mapToObj(PowerConditionDTO dto) throws PermissionException {
+		
 		if (dto == null) return null;
 		
 		try {
-			
 			if (dto.getId() != 0) {
-				return sf.eventConditionService.findById(dto.getId());
+				return sf.powerConditionService.findById(dto.getId());
 			}
 			
-			EventCondition obj = new EventCondition();
-			obj.setEvent(sf.eventService.findById(dto.getEventId()));
+			PowerCondition obj = new PowerCondition();
 			obj.setInput(sf.mf.pinMapper.mapToObj(dto.getInput()));
 			obj.setOperationType(sf.mf.operationTypeMapper.mapToObj(dto.getOperationType()));
-			obj.setValue(dto.getValue());
+			obj.setPin(sf.pinService.findById(dto.getPinId()));
+			obj.setValue(obj.getValue());
 			
 			return obj;
-		} catch (DAOException ex) {
-			throw new IllegalArgumentException(ex);
+			
+		} catch (DAOException e) {
+			throw new IllegalArgumentException(e);
 		}
+		
 	}
 
 	@Override
-	public EventConditionDTO mapToDto(EventCondition obj) throws PermissionException {
+	public PowerConditionDTO mapToDto(PowerCondition obj) throws PermissionException {
 		if (obj == null) return null;
 		
-		EventConditionDTO dto = new EventConditionDTO();
+		PowerConditionDTO dto = new PowerConditionDTO();
 		dto.setCreatedAt(obj.getCreatedAt());
+		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setId(obj.getId());
-		dto.setInput(sf.mf.pinMapper.mapToDto(obj.getInput()));
 		dto.setModifiedAt(obj.getModifiedAt());
 		dto.setOperationType(sf.mf.operationTypeMapper.mapToDto(obj.getOperationType()));
+		dto.setPinId(obj.getPin().getId());
 		dto.setValue(obj.getValue());
 		
 		return dto;

@@ -22,11 +22,7 @@ public class PIDControl implements Serializable {
 
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumns({
-//		@JoinColumn(name = "pin_number", referencedColumnName = "pin_number", nullable = false),
-//		@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-//	})
-	@JoinColumn(name = "pin_id", nullable = false)
+	@JoinColumn(name = "id", nullable = false)
 	private Pin pin;
 	
 	@Column(name = "kp", nullable = false)

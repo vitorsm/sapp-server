@@ -35,18 +35,10 @@ public class PowerCondition {
 	private float value;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumns({
-//			@JoinColumn(name = "input_pin_number", referencedColumnName = "input_pin_number"),
-//			@JoinColumn(name = "input_control_module_id", referencedColumnName = "input_control_module_id")
-//	})
 	@JoinColumn(name = "input_pin_id", referencedColumnName = "pin_id")
 	private Pin input;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumns({
-//			@JoinColumn(name = "pin_number", referencedColumnName = "pin_number"),
-//			@JoinColumn(name = "control_module_id", referencedColumnName = "control_module_id")
-//	})
 	@JoinColumn(name = "pin_id", referencedColumnName = "pin_id")
 	private Pin pin;
 	

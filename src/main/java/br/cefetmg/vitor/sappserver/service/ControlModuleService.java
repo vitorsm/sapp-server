@@ -15,6 +15,7 @@ import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.ControlModule;
 import br.cefetmg.vitor.sappserver.models.Permission;
+import br.cefetmg.vitor.sappserver.models.Pin;
 import br.cefetmg.vitor.sappserver.models.User;
 
 @Service
@@ -44,7 +45,15 @@ public class ControlModuleService implements ServiceServer<ControlModule> {
 	@Override
 	public void update(ControlModule t) throws DAOException, PermissionException {
 		
+		detach(t);
+		
 		User currentUser = sf.authenticateService.currentAccount();
+		
+		for (Pin pin : t.getPins()) {
+			if (pin.getId() == 0) {
+				sf.pinService.preparePinToSave(pin, currentUser);
+			}
+		}
 		
 		if (!currentUser.hasPermission(Permission.MANAGE_MODULE_CONTROL)) {
 			throw new PermissionException();
@@ -98,4 +107,8 @@ public class ControlModuleService implements ServiceServer<ControlModule> {
 		return this.get(pk);
 	}
 
+
+	public void detach(ControlModule controlModule) {
+		dao.detach(controlModule);
+	}
 }

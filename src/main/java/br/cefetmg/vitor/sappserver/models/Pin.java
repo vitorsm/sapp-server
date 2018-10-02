@@ -1,5 +1,6 @@
 package br.cefetmg.vitor.sappserver.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.cefetmg.vitor.sappserver.utils.EntityUtils;
 import lombok.Data;
 
 @Entity
@@ -64,7 +66,7 @@ public class Pin {
 	private List<PowerCondition> powerConditions;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pid_control_id", referencedColumnName = "pin_id")
+	@JoinColumn(name = "pid_control_id", referencedColumnName = "id")
 	private PIDControl pidControl;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -86,6 +88,16 @@ public class Pin {
 		
 		if (this.modifiedAt == null)
 			this.modifiedAt = createdAt;
+		
+	}
+	
+	public void mergePowerConditions(List<PowerCondition> powerConditions) {
+		
+		if (this.powerConditions == null) {
+			this.powerConditions = new ArrayList<PowerCondition>();
+		}
+		
+		EntityUtils.mergeList(this.powerConditions, powerConditions);
 		
 	}
 	

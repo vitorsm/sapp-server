@@ -97,4 +97,13 @@ public class PinService implements ServiceServer<Pin> {
 		
 		return this.get(pk);
 	}
+	
+	public void preparePinToSave(Pin pin, User user) {
+		pin.setCreatedAt(new Date());
+		pin.setCreatedBy(user);
+		
+		if (pin.getPidControl() != null) {
+			sf.pidControleService.prepareToSave(pin.getPidControl(), user);
+		}
+	}
 }
