@@ -31,8 +31,14 @@ public class PinTypeMapper extends Mapper<PinType, PinTypeDTO>{
 	public PinTypeDTO mapToDto(PinType obj) throws PermissionException {
 		if (obj == null) return null;
 		
-		return sf.mf.modelMapper.map(obj, PinTypeDTO.class);
+//		return sf.mf.modelMapper.map(obj, PinTypeDTO.class);
 		
+		PinTypeDTO dto = new PinTypeDTO();
+		dto.setDescription(obj.getDescription());
+		dto.setId(obj.getId());
+		dto.setName(obj.getName());
+		
+		return dto;
 	}
 
 }

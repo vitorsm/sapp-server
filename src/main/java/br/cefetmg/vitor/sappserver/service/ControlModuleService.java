@@ -36,8 +36,7 @@ public class ControlModuleService implements ServiceServer<ControlModule> {
 			throw new PermissionException();
 		}
 		
-		t.setCreatedBy(currentUser);
-		t.setCreatedAt(new Date());
+		prepareToPersist(t, currentUser);
 		
 		dao.insert(t);
 	}
@@ -48,18 +47,13 @@ public class ControlModuleService implements ServiceServer<ControlModule> {
 		detach(t);
 		
 		User currentUser = sf.authenticateService.currentAccount();
-		
-		for (Pin pin : t.getPins()) {
-			if (pin.getId() == 0) {
-				sf.pinService.preparePinToSave(pin, currentUser);
-			}
-		}
-		
+				
 		if (!currentUser.hasPermission(Permission.MANAGE_MODULE_CONTROL)) {
 			throw new PermissionException();
 		}
 		
-		t.setModifiedAt(new Date());
+		prepareToPersist(t, currentUser);
+		
 		dao.update(t);
 	}
 
@@ -107,8 +101,26 @@ public class ControlModuleService implements ServiceServer<ControlModule> {
 		return this.get(pk);
 	}
 
-
+	@Override
 	public void detach(ControlModule controlModule) {
 		dao.detach(controlModule);
+	}
+
+	@Override
+	public void prepareToPersist(ControlModule t, User user) {
+		
+		if (t.getId() == 0) {
+			t.setCreatedAt(new Date());
+			t.setCreatedBy(user);
+		} else {
+			t.setModifiedAt(new Date());
+		}
+		
+		if (t.getPins() != null) {
+			for (Pin pin : t.getPins()) {
+				sf.pinService.prepareToPersist(pin, user);
+			}
+		}
+		
 	}
 }

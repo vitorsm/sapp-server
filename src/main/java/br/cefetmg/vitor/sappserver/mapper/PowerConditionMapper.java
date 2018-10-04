@@ -25,6 +25,8 @@ public class PowerConditionMapper extends Mapper<PowerCondition, PowerConditionD
 				return sf.powerConditionService.findById(dto.getId());
 			}
 			
+			System.out.println("obj: " + dto);
+			
 			PowerCondition obj = new PowerCondition();
 			obj.setInput(sf.mf.pinMapper.mapToObj(dto.getInput()));
 			obj.setOperationType(sf.mf.operationTypeMapper.mapToObj(dto.getOperationType()));
@@ -51,6 +53,7 @@ public class PowerConditionMapper extends Mapper<PowerCondition, PowerConditionD
 		dto.setOperationType(sf.mf.operationTypeMapper.mapToDto(obj.getOperationType()));
 		dto.setPinId(obj.getPin().getId());
 		dto.setValue(obj.getValue());
+		dto.setInput(sf.mf.pinMapper.mapToDto(obj.getInput()));
 		
 		return dto;
 	}

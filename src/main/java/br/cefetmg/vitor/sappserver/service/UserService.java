@@ -48,9 +48,7 @@ public class UserService implements ServiceServer<User> {
 		String encripytedPass = passwordEncoder.encode(t.getPassword());
 		t.setPassword(encripytedPass);
 		
-		t.setCreatedAt(new Date());
-		
-//		t.setPassword(passwordEncoder.encode(t.getPassword()));
+		prepareToPersist(t, currentUser);
 		
 		dao.insert(t);
 		
@@ -64,7 +62,7 @@ public class UserService implements ServiceServer<User> {
 			throw new PermissionException("The current user does not have permission to update user.");
 		}
 		
-		t.setModifiedAt(new Date());
+		prepareToPersist(t, currentUser);
 		
 		dao.update(t);
 	}
@@ -132,5 +130,22 @@ public class UserService implements ServiceServer<User> {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void detach(User t) {
+		dao.detach(t);
+	}
+
+	@Override
+	public void prepareToPersist(User t, User user) {
+		
+		if (t.getId() == 0) {
+			t.setCreatedAt(new Date());
+			t.setCreatedBy(t);
+		} else {
+			t.setModifiedAt(new Date());
+		}
+		
 	}
 }

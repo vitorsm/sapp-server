@@ -92,4 +92,14 @@ public class PinHistoryService implements ServiceServer<PinHistory> {
 		
 		return this.get(pk);
 	}
+
+	@Override
+	public void detach(PinHistory t) {
+		dao.detach(t);
+	}
+
+	@Override
+	public void prepareToPersist(PinHistory t, User user) {
+		
+	}
 }

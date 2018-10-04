@@ -35,8 +35,7 @@ public class PlaceService implements ServiceServer<Place> {
 			throw new PermissionException();
 		}
 		
-		t.setCreatedBy(currentUser);
-		t.setCreatedAt(new Date());
+		prepareToPersist(t, currentUser);
 		
 		dao.insert(t);
 	}
@@ -96,5 +95,20 @@ public class PlaceService implements ServiceServer<Place> {
 		pk.put("id", id);
 		
 		return this.get(pk);
+	}
+
+	@Override
+	public void detach(Place t) {
+		dao.detach(t);
+	}
+
+	@Override
+	public void prepareToPersist(Place t, User user) {
+		
+		if (t.getId() == 0) {
+			t.setCreatedAt(new Date());
+			t.setCreatedBy(user);
+		}
+		
 	}
 }

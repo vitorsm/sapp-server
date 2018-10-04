@@ -14,6 +14,7 @@ import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.Pin;
+import br.cefetmg.vitor.sappserver.models.PowerCondition;
 import br.cefetmg.vitor.sappserver.models.Permission;
 import br.cefetmg.vitor.sappserver.models.User;
 
@@ -35,8 +36,7 @@ public class PinService implements ServiceServer<Pin> {
 			throw new PermissionException();
 		}
 		
-		t.setCreatedBy(currentUser);
-		t.setCreatedAt(new Date());
+		prepareToPersist(t, currentUser);
 		
 		dao.insert(t);
 	}
@@ -50,7 +50,8 @@ public class PinService implements ServiceServer<Pin> {
 			throw new PermissionException();
 		}
 		
-		t.setModifiedAt(new Date());
+		prepareToPersist(t, currentUser);
+		
 		dao.update(t);
 	}
 
@@ -98,12 +99,29 @@ public class PinService implements ServiceServer<Pin> {
 		return this.get(pk);
 	}
 	
-	public void preparePinToSave(Pin pin, User user) {
-		pin.setCreatedAt(new Date());
-		pin.setCreatedBy(user);
+	@Override
+	public void detach(Pin t) {
+		dao.detach(t);
+	}
+
+	@Override
+	public void prepareToPersist(Pin t, User user) {
+		if (t.getId() == 0) {
+			t.setCreatedAt(new Date());
+			t.setCreatedBy(user);
+			
+			if (t.getPidControl() != null) {
+				t.getPidControl().setCreatedAt(new Date());
+				t.getPidControl().setCreatedBy(user);
+			}
+		} else {
+			t.setModifiedAt(new Date());
+		}
 		
-		if (pin.getPidControl() != null) {
-			sf.pidControleService.prepareToSave(pin.getPidControl(), user);
+		if (t.getPowerConditions() != null) {
+			for (PowerCondition powerCondition : t.getPowerConditions()) {
+				sf.powerConditionService.prepareToPersist(powerCondition, user);
+			}
 		}
 	}
 }

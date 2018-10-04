@@ -39,7 +39,7 @@ public class PinMapper extends Mapper<Pin, PinDTO>{
 			obj.setNumber(dto.getNumber());
 			obj.setPidControl(sf.mf.pidControlMapper.mapToObj(dto.getPidControl()));
 			obj.setPinType(sf.mf.pinTypeMapper.mapToObj(dto.getPinType()));
-			obj.setPowerConditions(sf.mf.powerConditionMapper.mapToObj(dto.getPowerConditions()));
+			obj.mergePowerConditions(sf.mf.powerConditionMapper.mapToObj(dto.getPowerConditions()));
 			obj.setPowered(dto.isPowered());
 			obj.setSetPoint(dto.getSetPoint());
 			

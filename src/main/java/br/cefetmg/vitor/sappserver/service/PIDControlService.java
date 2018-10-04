@@ -99,12 +99,13 @@ public class PIDControlService implements ServiceServer<PIDControl> {
 		return this.get(pk);
 	}
 	
+	@Override
 	public void detach(PIDControl pidControl) {
 		dao.detach(pidControl);
 	}
-	
-	public void prepareToSave(PIDControl pidControl, User user) {
-		pidControl.setCreatedAt(new Date());
-		pidControl.setCreatedBy(user);
+
+	@Override
+	public void prepareToPersist(PIDControl t, User user) {
+		
 	}
 }

@@ -99,5 +99,15 @@ public class AccessHistoryService implements ServiceServer<AccessHistory> {
 		
 		return this.get(primaryKey);
 	}
+
+	@Override
+	public void detach(AccessHistory t) {
+		dao.detach(t);
+	}
+
+	@Override
+	public void prepareToPersist(AccessHistory t, User user) {
+		// PASS
+	}
 	
 }

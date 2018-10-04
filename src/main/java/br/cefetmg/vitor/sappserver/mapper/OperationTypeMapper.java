@@ -30,8 +30,11 @@ public class OperationTypeMapper extends Mapper<OperationType, OperationTypeDTO>
 	public OperationTypeDTO mapToDto(OperationType obj) throws PermissionException {
 		if (obj == null) return null;
 		
-		return sf.mf.modelMapper.map(obj, OperationTypeDTO.class);
+		OperationTypeDTO dto = new OperationTypeDTO();
+		dto.setId(obj.getId());
+		dto.setName(obj.getName());
 		
+		return dto;
 	}
 
 }

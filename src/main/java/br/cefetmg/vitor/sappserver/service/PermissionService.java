@@ -12,6 +12,7 @@ import br.cefetmg.vitor.sappserver.dao.impl.PermissionDAO;
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.models.Permission;
+import br.cefetmg.vitor.sappserver.models.User;
 
 @Service
 public class PermissionService implements ServiceServer<Permission> {
@@ -52,5 +53,17 @@ public class PermissionService implements ServiceServer<Permission> {
 		pk.put("id", id);
 		
 		return this.get(pk);
+	}
+
+	@Override
+	public void detach(Permission t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void prepareToPersist(Permission t, User user) {
+		// TODO Auto-generated method stub
+		
 	}
 }

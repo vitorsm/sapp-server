@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Scope("singleton")
 public class MapperFacade {
 	
-	public static final ModelMapper modelMapper = new ModelMapper();
+//	public static final ModelMapper modelMapper = new ModelMapper();
 	
 	
 	@Autowired

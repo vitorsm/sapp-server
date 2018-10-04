@@ -31,7 +31,14 @@ public class PermissionMapper extends Mapper<Permission, PermissionDTO>{
 	public PermissionDTO mapToDto(Permission obj) throws PermissionException {
 		if (obj == null) return null;
 		
-		return sf.mf.modelMapper.map(obj, PermissionDTO.class);
+//		return sf.mf.modelMapper.map(obj, PermissionDTO.class);
+		
+		PermissionDTO dto = new PermissionDTO();
+		dto.setDescription(obj.getDescription());
+		dto.setName(obj.getName());
+		dto.setId(obj.getId());
+		
+		return dto;
 	}
 
 }

@@ -35,8 +35,7 @@ public class DoorLockService implements ServiceServer<DoorLock> {
 			throw new PermissionException();
 		}
 		
-		t.setCreatedBy(currentUser);
-		t.setCreatedAt(new Date());
+		prepareToPersist(t, currentUser);
 		
 		dao.insert(t);
 	}
@@ -50,7 +49,8 @@ public class DoorLockService implements ServiceServer<DoorLock> {
 			throw new PermissionException();
 		}
 		
-		t.setModifiedAt(new Date());
+		prepareToPersist(t, currentUser);
+		
 		dao.update(t);
 	}
 
@@ -96,6 +96,23 @@ public class DoorLockService implements ServiceServer<DoorLock> {
 		pk.put("id", id);
 		
 		return this.get(pk);
+	}
+
+	@Override
+	public void detach(DoorLock t) {
+		dao.detach(t);
+	}
+
+	@Override
+	public void prepareToPersist(DoorLock doorLock, User user) {
+		
+		if (doorLock.getId() == 0) {
+			doorLock.setCreatedAt(new Date());
+			doorLock.setCreatedBy(user);
+		} else {
+			doorLock.setModifiedAt(new Date());
+		}
+		
 	}
 
 }

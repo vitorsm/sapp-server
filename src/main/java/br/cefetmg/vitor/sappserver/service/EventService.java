@@ -14,6 +14,7 @@ import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.Event;
+import br.cefetmg.vitor.sappserver.models.EventCondition;
 import br.cefetmg.vitor.sappserver.models.Permission;
 import br.cefetmg.vitor.sappserver.models.User;
 
@@ -35,8 +36,7 @@ public class EventService implements ServiceServer<Event> {
 			throw new PermissionException();
 		}
 		
-		t.setCreatedBy(currentUser);
-		t.setCreatedAt(new Date());
+		prepareToPersist(t, currentUser);
 		
 		dao.insert(t);
 	}
@@ -50,7 +50,8 @@ public class EventService implements ServiceServer<Event> {
 			throw new PermissionException();
 		}
 		
-		t.setModifiedAt(new Date());
+		prepareToPersist(t, currentUser);
+		
 		dao.update(t);
 	}
 
@@ -96,6 +97,29 @@ public class EventService implements ServiceServer<Event> {
 		pk.put("id", id);
 		
 		return this.get(pk);
+	}
+
+	@Override
+	public void detach(Event t) {
+		dao.detach(t);
+	}
+
+	@Override
+	public void prepareToPersist(Event t, User user) {
+		
+		if (t.getId() == 0) {
+			t.setCreatedAt(new Date());
+			t.setCreatedBy(user);
+		} else {
+			t.setModifiedAt(new Date());
+		}
+		
+		if (t.getEventConditions() != null) {
+			for (EventCondition condition : t.getEventConditions()) {
+				sf.eventConditionService.prepareToPersist(condition, user);
+			}
+		}
+		
 	}
 
 }

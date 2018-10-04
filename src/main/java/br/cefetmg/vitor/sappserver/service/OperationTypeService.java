@@ -12,6 +12,7 @@ import br.cefetmg.vitor.sappserver.dao.impl.OperationTypeDAO;
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.models.OperationType;
+import br.cefetmg.vitor.sappserver.models.User;
 
 @Service
 public class OperationTypeService implements ServiceServer<OperationType> {
@@ -52,6 +53,18 @@ public class OperationTypeService implements ServiceServer<OperationType> {
 		pk.put("id", id);
 		
 		return this.get(pk);
+	}
+
+	@Override
+	public void detach(OperationType t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void prepareToPersist(OperationType t, User user) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

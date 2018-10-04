@@ -12,6 +12,7 @@ import br.cefetmg.vitor.sappserver.dao.impl.PinTypeDAO;
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.models.PinType;
+import br.cefetmg.vitor.sappserver.models.User;
 
 @Service
 public class PinTypeService implements ServiceServer<PinType> {
@@ -52,5 +53,17 @@ public class PinTypeService implements ServiceServer<PinType> {
 		pk.put("id", id);
 		
 		return this.get(pk);
+	}
+
+	@Override
+	public void detach(PinType t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void prepareToPersist(PinType t, User user) {
+		// TODO Auto-generated method stub
+		
 	}
 }

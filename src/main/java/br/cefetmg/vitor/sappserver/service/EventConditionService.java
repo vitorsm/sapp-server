@@ -35,7 +35,7 @@ public class EventConditionService implements ServiceServer<EventCondition> {
 			throw new PermissionException();
 		}
 		
-		t.setCreatedAt(new Date());
+		prepareToPersist(t, currentUser);
 		
 		dao.insert(t);
 	}
@@ -49,7 +49,8 @@ public class EventConditionService implements ServiceServer<EventCondition> {
 			throw new PermissionException();
 		}
 		
-		t.setModifiedAt(new Date());
+		prepareToPersist(t, currentUser);
+		
 		dao.update(t);
 	}
 
@@ -95,6 +96,22 @@ public class EventConditionService implements ServiceServer<EventCondition> {
 		pk.put("id", id);
 		
 		return this.get(pk);
+	}
+
+	@Override
+	public void detach(EventCondition t) {
+		this.detach(t);
+	}
+
+	@Override
+	public void prepareToPersist(EventCondition t, User user) {
+		
+		if (t.getId() == 0) {
+			t.setCreatedAt(new Date());
+		} else {
+			t.setModifiedAt(new Date());
+		}
+		
 	}
 
 }

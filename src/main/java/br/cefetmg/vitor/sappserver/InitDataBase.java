@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import br.cefetmg.vitor.sappserver.controller.ControlModuleController;
 import br.cefetmg.vitor.sappserver.dao.Filter;
+import br.cefetmg.vitor.sappserver.dao.impl.OperationTypeDAO;
 import br.cefetmg.vitor.sappserver.dao.impl.PermissionDAO;
 import br.cefetmg.vitor.sappserver.dao.impl.PinTypeDAO;
 import br.cefetmg.vitor.sappserver.dao.impl.UserDAO;
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
+import br.cefetmg.vitor.sappserver.models.OperationType;
 import br.cefetmg.vitor.sappserver.models.Permission;
 import br.cefetmg.vitor.sappserver.models.PinType;
 import br.cefetmg.vitor.sappserver.models.User;
@@ -31,6 +33,9 @@ public class InitDataBase {
 	@Autowired
 	private UserDAO userDAO;
 	
+	@Autowired
+	private OperationTypeDAO operationTypeDAO;
+	
 	private static final Logger LOGGER = Logger.getLogger(InitDataBase.class.toString());
 	
 	public void initDataBase() {
@@ -45,37 +50,55 @@ public class InitDataBase {
 				permissions = insertPermissions();
 				insertAdminUser(permissions);
 				insertPinTypes();
+				insertOperationTypes();
 				
 				LOGGER.info("Preenchido");
-			}	
+			}
 		} catch(DAOException ex) {
 			LOGGER.info("DAOException: " + ex.getMessage());
 		}
 		
 	}
 	
-	public void insertPinTypes() throws DAOException {
+	private void insertOperationTypes() throws DAOException {
+		
+		OperationType o1 = new OperationType();
+		o1.setName("< menor");
+		operationTypeDAO.insert(o1);
+		
+		OperationType o2 = new OperationType();
+		o2.setName("> maior");
+		operationTypeDAO.insert(o2);
+		
+		OperationType o3 = new OperationType();
+		o3.setName("<> diferente");
+		operationTypeDAO.insert(o3);
+		
+		OperationType o4 = new OperationType();
+		o4.setName("= igual");
+		operationTypeDAO.insert(o4);
+		
+	}
+	
+	private void insertPinTypes() throws DAOException {
 		
 		PinType p1 = new PinType();
-//		p1.setId(PinType.PIN_TYPE_INPUT_ID);
 		p1.setName("Entrada");
 		p1.setDescription("Instrumento de entrada, como por exemplo um sensor");
 		pinTypeDAO.insert(p1);
 
 		PinType p2 = new PinType();
-//		p2.setId(PinType.PIN_TYPE_OUTPUT_ID);
 		p2.setName("Saída");
 		p2.setDescription("Instrumento de saída PID");
 		pinTypeDAO.insert(p2);
 		
 		PinType p3 = new PinType();
-//		p3.setId(PinType.PIN_TYPE_BINARY_OUTPUT_ID);
 		p3.setName("Entrada");
 		p3.setDescription("Instrumento de saída binária, como por exemplo um relé de uma lâmpada");
 		pinTypeDAO.insert(p3);
 	}
 	
-	public void insertAdminUser(List<Permission> permissions) throws DAOException {
+	private void insertAdminUser(List<Permission> permissions) throws DAOException {
 		
 		MD5PasswordEncoder passwordEncoder = new MD5PasswordEncoder();
 		String encripytedPass = passwordEncoder.encode("123");
@@ -90,7 +113,7 @@ public class InitDataBase {
 		userDAO.update(user);
 	}
 	
-	public List<Permission> insertPermissions() throws DAOException {
+	private List<Permission> insertPermissions() throws DAOException {
 		
 		List<Permission> permissions = new ArrayList<Permission>();
 		Permission p1 = new Permission(Permission.INSERT_ACCESS_HISTORY, "Insert access history permission");
