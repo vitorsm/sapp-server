@@ -1,10 +1,7 @@
 package br.cefetmg.vitor.sappserver.broker;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +14,16 @@ import br.cefetmg.vitor.sappserver.security.TokenAuthenticationService;
 import br.cefetmg.vitor.sappserver.utils.TopicUtils;
 import br.cefetmg.vitor.udp_broker.core.IBroker;
 import br.cefetmg.vitor.udp_broker.core.IJoinning;
-import br.cefetmg.vitor.udp_broker.core.impl.Broker;
 import br.cefetmg.vitor.udp_broker.core.impl.Credentials;
 import br.cefetmg.vitor.udp_broker.models.Client;
+import br.cefetmg.vitor.udp_broker.models.Condition;
+import br.cefetmg.vitor.udp_broker.models.PinType;
 import br.cefetmg.vitor.udp_broker.models.Topic;
 import br.cefetmg.vitor.udp_broker.models.message.Message;
 import br.cefetmg.vitor.udp_broker.models.message.MessageHeader;
 import br.cefetmg.vitor.udp_broker.models.message.MessageType;
 import br.cefetmg.vitor.udp_broker.models.message.body.MessageBodyUpdateParam;
+import br.cefetmg.vitor.udp_broker.models.message.body.MessageBodyUpdateParam.Param;
 
 @Service
 public class JoinningBroker implements IJoinning {
@@ -60,11 +59,12 @@ public class JoinningBroker implements IJoinning {
 	
 	private void sendParamMessage(Client client, ControlModule controlModule) {
 	
-		MessageBodyUpdateParam messageBody = new MessageBodyUpdateParam();
+		MessageBodyUpdateParam messageBody = new MessageBodyUpdateParam(5);
 		
 		//construir aqui a mensagem de parametros
 		
 		String token = TokenAuthenticationService.generateToken(controlModule);
+		client.setToken(broker.getSecurity().generateReducedToken(token));
 		
 		MessageHeader messageHeader = new MessageHeader();
 		messageHeader.setAccessToken(token);
@@ -116,4 +116,39 @@ public class JoinningBroker implements IJoinning {
 				credentials.getPassword() != null && !credentials.getPassword().isEmpty();
 	}
 	
+	private MessageBodyUpdateParam generateUpdateParamMessage(ControlModule controlModule, String token) {
+//		private String token;
+//		private int[] ids;
+//		private PinType[] pinTypes;
+//		private float[] kps;
+//		private float[] kis;
+//		private float[] kds;
+//		private int[] sampleTimes;
+//		private float[] setpoints;
+//		private Condition[] conditions;
+//		private int pinsAmount;
+		MessageBodyUpdateParam message = new MessageBodyUpdateParam(5);
+		message.setToken(token);
+		
+//		for (Pin pin : controlModule.getPins()) {
+		for (int i = 0; i < controlModule.getPins().size(); i++) {
+			Pin pin = controlModule.getPins().get(i);
+			
+			MessageBodyUpdateParam.Param param = new MessageBodyUpdateParam.Param();
+			param.id = pin.getId();
+			param.pinType = pin.getPinType();
+			
+			param.kp = pin.getPidControl().getKp();
+			param.ki = pin.getPidControl().getKi();
+			param.kd = pin.getPidControl().getKd();
+			
+			param.sampleTime = (int) pin.getHistorySampleTime();
+			param.setpoint = pin.getSetPoint();
+			param.condition = null;
+			
+			message.addItems(i, param);
+		}
+		
+		return message;
+	}
 }

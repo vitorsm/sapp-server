@@ -15,17 +15,33 @@ public class EntityUtils {
 			list1.removeAll(list1);
 		} else {
 			
-			for (Object obj : list1) {
+			// Nao foi usado um foreach pq estava dando problema de ConcurrentModificationException
+			
+			for (int i = 0; i < list1.size(); i++) {
+				Object obj = list1.get(i);
 				if (!list2.contains(obj)) {
 					list1.remove(obj);
 				}
 			}
 			
-			for (Object obj : list2) {
+			for (int i = 0; i < list2.size(); i++) {
+				Object obj = list2.get(i);
 				if (!list1.contains(obj)) {
 					list1.add(obj);
 				}
 			}
+//			
+//			for (Object obj : list1) {
+//				if (!list2.contains(obj)) {
+//					list1.remove(obj);
+//				}
+//			}
+//			
+//			for (Object obj : list2) {
+//				if (!list1.contains(obj)) {
+//					list1.add(obj);
+//				}
+//			}
 		}
 		
 	}

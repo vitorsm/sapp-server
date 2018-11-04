@@ -19,19 +19,21 @@ public class PowerConditionMapper extends Mapper<PowerCondition, PowerConditionD
 	public PowerCondition mapToObj(PowerConditionDTO dto) throws PermissionException {
 		
 		if (dto == null) return null;
-		
+
 		try {
+			PowerCondition obj = null;
+			
 			if (dto.getId() != 0) {
-				return sf.powerConditionService.findById(dto.getId());
+				obj = sf.powerConditionService.findById(dto.getId());
 			}
 			
-			System.out.println("obj: " + dto);
+			if (obj == null)
+				obj = new PowerCondition();
 			
-			PowerCondition obj = new PowerCondition();
 			obj.setInput(sf.mf.pinMapper.mapToObj(dto.getInput()));
 			obj.setOperationType(sf.mf.operationTypeMapper.mapToObj(dto.getOperationType()));
 			obj.setPin(sf.pinService.findById(dto.getPinId()));
-			obj.setValue(obj.getValue());
+			obj.setValue(dto.getValue());
 			
 			return obj;
 			

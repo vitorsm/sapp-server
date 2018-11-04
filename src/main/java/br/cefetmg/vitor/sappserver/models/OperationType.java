@@ -14,11 +14,12 @@ import lombok.Data;
 @Data
 public class OperationType {
 
-	final public static int LESS_ID = 1;
+	final public static int LESS_ID = 3;
 	final public static int HIGHER_ID = 2;
-	final public static int NOT_EQUALS_ID = 3;
-	final public static int EQUALS_ID = 4;
-	
+	final public static int NOT_EQUALS_ID = 6;
+	final public static int EQUALS_ID = 1;
+	final public static int HIGHER_EQUALS_ID = 4;
+	final public static int LESS_EQUALS_ID = 5;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

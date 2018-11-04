@@ -27,7 +27,7 @@ public class PowerCondition {
 	@Column(name = "power_condition_id")
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "operation_type_id", nullable = false)
 	private OperationType operationType;
 	

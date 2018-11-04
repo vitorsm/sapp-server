@@ -37,11 +37,14 @@ public class PinMapper extends Mapper<Pin, PinDTO>{
 			obj.setHistorySampleTime(dto.getHistorySampleTime());
 			obj.setName(dto.getName());
 			obj.setNumber(dto.getNumber());
-			obj.setPidControl(sf.mf.pidControlMapper.mapToObj(dto.getPidControl()));
 			obj.setPinType(sf.mf.pinTypeMapper.mapToObj(dto.getPinType()));
 			obj.mergePowerConditions(sf.mf.powerConditionMapper.mapToObj(dto.getPowerConditions()));
 			obj.setPowered(dto.isPowered());
 			obj.setSetPoint(dto.getSetPoint());
+			obj.setPidControl(sf.mf.pidControlMapper.mapToObj(dto.getPidControl()));
+			
+			if (obj.getPidControl() != null)
+				obj.getPidControl().setPin(obj);
 			
 			return obj;
 		} catch (DAOException e) {

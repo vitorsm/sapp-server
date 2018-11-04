@@ -24,7 +24,7 @@ public class PIDControlMapper extends Mapper<PIDControl, PIDControlDTO>{
 		try {
 			obj = sf.pidControleService.findById(dto.getPinId());
 			
-			if (null == null) {
+			if (obj == null) {
 				obj = new PIDControl();
 			}
 			

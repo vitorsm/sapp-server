@@ -70,21 +70,25 @@ public class TokenAuthenticationService {
 		
 	}
 
-	static Authentication getAuthenticationByToken(String token) {
+	public static String getLoginByToken(String token) {
+		String user = null;
 		if (token != null) {
-			
-			String user = null;
 			try {
 				user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody()
 						.getSubject();
 			} catch (Exception ex) {
 				user = null;
 			}
+		}
+		
+		return user;
+	}
+	
+	static Authentication getAuthenticationByToken(String token) {
+		String user = getLoginByToken(token);
 
-			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
-			}
-
+		if (user != null) {
+			return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
 		}
 		
 		return null;
