@@ -1,15 +1,21 @@
 package br.cefetmg.vitor.sappserver.broker;
 
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
+import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.ControlModule;
+import br.cefetmg.vitor.sappserver.models.OperationType;
 import br.cefetmg.vitor.sappserver.models.Pin;
+import br.cefetmg.vitor.sappserver.models.PinType;
+import br.cefetmg.vitor.sappserver.models.PowerCondition;
 import br.cefetmg.vitor.sappserver.models.User;
+import br.cefetmg.vitor.sappserver.security.MD5PasswordEncoder;
 import br.cefetmg.vitor.sappserver.security.TokenAuthenticationService;
 import br.cefetmg.vitor.sappserver.utils.TopicUtils;
 import br.cefetmg.vitor.udp_broker.core.IBroker;
@@ -17,13 +23,11 @@ import br.cefetmg.vitor.udp_broker.core.IJoinning;
 import br.cefetmg.vitor.udp_broker.core.impl.Credentials;
 import br.cefetmg.vitor.udp_broker.models.Client;
 import br.cefetmg.vitor.udp_broker.models.Condition;
-import br.cefetmg.vitor.udp_broker.models.PinType;
 import br.cefetmg.vitor.udp_broker.models.Topic;
 import br.cefetmg.vitor.udp_broker.models.message.Message;
 import br.cefetmg.vitor.udp_broker.models.message.MessageHeader;
 import br.cefetmg.vitor.udp_broker.models.message.MessageType;
 import br.cefetmg.vitor.udp_broker.models.message.body.MessageBodyUpdateParam;
-import br.cefetmg.vitor.udp_broker.models.message.body.MessageBodyUpdateParam.Param;
 
 @Service
 public class JoinningBroker implements IJoinning {
@@ -59,12 +63,11 @@ public class JoinningBroker implements IJoinning {
 	
 	private void sendParamMessage(Client client, ControlModule controlModule) {
 	
-		MessageBodyUpdateParam messageBody = new MessageBodyUpdateParam(5);
-		
-		//construir aqui a mensagem de parametros
-		
 		String token = TokenAuthenticationService.generateToken(controlModule);
-		client.setToken(broker.getSecurity().generateReducedToken(token));
+		token = broker.getSecurity().generateReducedToken(token);
+		client.setToken(token);
+		
+		MessageBodyUpdateParam messageBody = generateUpdateParamMessage(controlModule, token);
 		
 		MessageHeader messageHeader = new MessageHeader();
 		messageHeader.setAccessToken(token);
@@ -101,7 +104,9 @@ public class JoinningBroker implements IJoinning {
 			throw new IllegalArgumentException("Id and password is required to authenticate");
 		}
 		
-		User user = sf.authenticateService.authenticateUser(credentials.getId(), credentials.getPassword());
+		MD5PasswordEncoder encoder = new MD5PasswordEncoder();
+		
+		User user = sf.authenticateService.authenticateUser(credentials.getId(), encoder.encode(credentials.getPassword()));
 		
 		if (user instanceof ControlModule) {
 			return (ControlModule) user;
@@ -117,38 +122,89 @@ public class JoinningBroker implements IJoinning {
 	}
 	
 	private MessageBodyUpdateParam generateUpdateParamMessage(ControlModule controlModule, String token) {
-//		private String token;
-//		private int[] ids;
-//		private PinType[] pinTypes;
-//		private float[] kps;
-//		private float[] kis;
-//		private float[] kds;
-//		private int[] sampleTimes;
-//		private float[] setpoints;
-//		private Condition[] conditions;
-//		private int pinsAmount;
-		MessageBodyUpdateParam message = new MessageBodyUpdateParam(5);
+		
+		MessageBodyUpdateParam message = new MessageBodyUpdateParam(controlModule.getPins().size());
 		message.setToken(token);
 		
-//		for (Pin pin : controlModule.getPins()) {
 		for (int i = 0; i < controlModule.getPins().size(); i++) {
 			Pin pin = controlModule.getPins().get(i);
 			
 			MessageBodyUpdateParam.Param param = new MessageBodyUpdateParam.Param();
 			param.id = pin.getId();
-			param.pinType = pin.getPinType();
+			switch(pin.getPinType().getId()) {
+			case PinType.PIN_TYPE_INPUT_ID:
+				param.pinType = br.cefetmg.vitor.udp_broker.models.PinType.INPUT;
+				break;
+			case PinType.PIN_TYPE_BINARY_OUTPUT_ID:
+				param.pinType = br.cefetmg.vitor.udp_broker.models.PinType.BINARY_OUTPUT;
+				break;
+			case PinType.PIN_TYPE_OUTPUT_ID:
+				param.pinType = br.cefetmg.vitor.udp_broker.models.PinType.OUTPUT;
+				break;
+			default:
+					break;
+			}
 			
-			param.kp = pin.getPidControl().getKp();
-			param.ki = pin.getPidControl().getKi();
-			param.kd = pin.getPidControl().getKd();
+			if (pin.getPidControl() != null) {
+				param.kp = pin.getPidControl().getKp();
+				param.ki = pin.getPidControl().getKi();
+				param.kd = pin.getPidControl().getKd();
+			}
 			
 			param.sampleTime = (int) pin.getHistorySampleTime();
 			param.setpoint = pin.getSetPoint();
-			param.condition = null;
+			param.condition = generateCondition(pin);
 			
 			message.addItems(i, param);
 		}
 		
 		return message;
+	}
+	
+	private Condition generateCondition(Pin pin) {
+		if (pin.getPowerConditions() == null || pin.getPowerConditions().isEmpty())
+			return new Condition();
+		
+		Condition condition = null;
+		Condition lastCondition = null;
+		Condition returnCondition = null;
+		for (PowerCondition powerCondition : pin.getPowerConditions()) {
+			condition = new Condition();
+			condition.setInputId(powerCondition.getInput().getId());
+			condition.setValue(powerCondition.getValue());
+			
+			switch (powerCondition.getOperationType().getId()) {
+			case OperationType.EQUALS_ID:
+				condition.setOperationType(br.cefetmg.vitor.udp_broker.models.OperationType.EQUALS);
+				break;
+			case OperationType.HIGHER_ID:
+				condition.setOperationType(br.cefetmg.vitor.udp_broker.models.OperationType.HIGHER);
+				break;
+			case OperationType.LESS_ID:
+				condition.setOperationType(br.cefetmg.vitor.udp_broker.models.OperationType.LESS);
+				break;
+			case OperationType.HIGHER_EQUALS_ID:
+				condition.setOperationType(br.cefetmg.vitor.udp_broker.models.OperationType.HIGHER_EQUALS);
+				break;
+			case OperationType.LESS_EQUALS_ID:
+				condition.setOperationType(br.cefetmg.vitor.udp_broker.models.OperationType.LESS_EQUALS);
+				break;
+			case OperationType.NOT_EQUALS_ID:
+				condition.setOperationType(br.cefetmg.vitor.udp_broker.models.OperationType.NOT_EQUALS);
+				break;
+			default:
+				break;
+			}
+			
+			if (lastCondition != null) {
+				lastCondition.setNext(condition);
+			} else {
+				returnCondition = condition;
+			}
+			
+			lastCondition = condition;
+		}
+		
+		return returnCondition;
 	}
 }

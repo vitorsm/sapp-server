@@ -37,7 +37,7 @@ public class ControlModule extends User implements Serializable {
 	@OneToMany(mappedBy = "controlModule",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
-			fetch = FetchType.LAZY)
+			fetch = FetchType.EAGER)
 	private List<Pin> pins;
 	
 	

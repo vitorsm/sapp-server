@@ -60,7 +60,7 @@ public class Pin {
 	private float setPoint;
 	
 	@OneToMany(mappedBy = "pin",
-			fetch = FetchType.LAZY,
+			fetch = FetchType.EAGER,
 			orphanRemoval = true,
 			cascade = CascadeType.ALL)
 	private List<PowerCondition> powerConditions;

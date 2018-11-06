@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,11 +85,11 @@ public class ControlModuleService implements ServiceServer<ControlModule> {
 	@Override
 	public ControlModule get(Map<String, Object> primaryKey) throws DAOException, PermissionException {
 
-		User currentUser = sf.authenticateService.currentAccount();
-		
-		if (!currentUser.hasPermission(Permission.LIST_MODULE_CONTROL)) {
-			throw new PermissionException();
-		}
+//		User currentUser = sf.authenticateService.currentAccount();
+//		
+//		if (!currentUser.hasPermission(Permission.LIST_MODULE_CONTROL)) {
+//			throw new PermissionException();
+//		}
 		
 		return dao.get(primaryKey, ControlModule.class);
 	}
@@ -98,7 +99,10 @@ public class ControlModuleService implements ServiceServer<ControlModule> {
 		Map<String, Object> pk = new HashMap<String, Object>();
 		pk.put("id", id);
 		
-		return this.get(pk);
+		ControlModule c = this.get(pk);
+		c.getPins();
+		
+		return c;
 	}
 
 	@Override
@@ -122,5 +126,11 @@ public class ControlModuleService implements ServiceServer<ControlModule> {
 			}
 		}
 		
+	}
+	
+	public void initialize(ControlModule controlModule) {
+		if (controlModule == null) return;
+		
+		controlModule.getPins().size();
 	}
 }
