@@ -3,6 +3,7 @@ package br.cefetmg.vitor.sappserver.models;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,8 +22,8 @@ import lombok.Data;
 public class PIDControl implements Serializable {
 
 	@Id
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "pid_control_id", referencedColumnName = "pin_id", nullable = false)
 	private Pin pin;
 	
 	@Column(name = "kp", nullable = false)
@@ -42,6 +43,7 @@ public class PIDControl implements Serializable {
 //		@JoinColumn(name = "input_pin_number", referencedColumnName = "input_pin_number", nullable = false),
 //		@JoinColumn(name = "input_user_id", referencedColumnName = "input_user_id", nullable = false)
 //	})
+//	@JoinColumn(name = "input_pin_id", referencedColumnName = "pin_id", nullable = false)
 	@JoinColumn(name = "input_pin_id", referencedColumnName = "pin_id", nullable = false)
 	private Pin input;
 

@@ -1,12 +1,10 @@
 package br.cefetmg.vitor.sappserver.mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.cefetmg.vitor.sappserver.dto.AccessHistoryDTO;
 import br.cefetmg.vitor.sappserver.dto.ControlModuleDTO;
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
@@ -39,11 +37,24 @@ public class ControlModuleMapper extends Mapper<ControlModule, ControlModuleDTO>
 		if (obj == null)
 			return null;
 		
+//		List<Pin> pins = sf.mf.pinMapper.mapToObj(dto.getInstruments());
+//		for (Pin pin : pins) {
+//			if (pin.getId() == 0) {
+//				try {
+//					pin.setControlModule(null);
+//					sf.pinService.insert(pin);
+//				} catch (DAOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+		
 		obj.setDescription(dto.getDescription());
 		obj.setLogin(dto.getLogin());
 		obj.setName(dto.getName());
 		obj.setPermissions(sf.mf.permissionMapper.mapToObj(dto.getPermissions()));
 		obj.setPlace(sf.mf.placeMapper.mapToObj(dto.getPlace()));
+		
 		obj.mergePins(sf.mf.pinMapper.mapToObj(dto.getInstruments()));
 
 		

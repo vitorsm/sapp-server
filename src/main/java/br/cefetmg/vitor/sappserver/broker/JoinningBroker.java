@@ -18,6 +18,7 @@ import br.cefetmg.vitor.sappserver.models.User;
 import br.cefetmg.vitor.sappserver.security.MD5PasswordEncoder;
 import br.cefetmg.vitor.sappserver.security.TokenAuthenticationService;
 import br.cefetmg.vitor.sappserver.utils.TopicUtils;
+import br.cefetmg.vitor.udp_broker.Constants;
 import br.cefetmg.vitor.udp_broker.core.IBroker;
 import br.cefetmg.vitor.udp_broker.core.IJoinning;
 import br.cefetmg.vitor.udp_broker.core.impl.Credentials;
@@ -123,7 +124,8 @@ public class JoinningBroker implements IJoinning {
 	
 	private MessageBodyUpdateParam generateUpdateParamMessage(ControlModule controlModule, String token) {
 		
-		MessageBodyUpdateParam message = new MessageBodyUpdateParam(controlModule.getPins().size());
+//		MessageBodyUpdateParam message = new MessageBodyUpdateParam(controlModule.getPins().size());
+		MessageBodyUpdateParam message = new MessageBodyUpdateParam(Constants.PINS_AMOUNT);
 		message.setToken(token);
 		
 		for (int i = 0; i < controlModule.getPins().size(); i++) {

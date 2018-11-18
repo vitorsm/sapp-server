@@ -58,7 +58,7 @@ public class PinMapper extends Mapper<Pin, PinDTO>{
 		if (obj == null) return null;
 		
 		PinDTO dto = new PinDTO();
-		dto.setControlModuleId(obj.getControlModule().getId());
+		dto.setControlModuleId(obj.getControlModule() != null ? obj.getControlModule().getId() : 0);
 		dto.setCreatedAt(obj.getCreatedAt());
 		dto.setCreatedBy(sf.mf.reducedUserMapper.mapToDto(obj.getCreatedBy()));
 		dto.setDescription(obj.getDescription());

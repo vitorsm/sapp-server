@@ -54,6 +54,8 @@ public class ControlModuleController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ControlModuleDTO> update(@RequestBody ControlModuleDTO controlModule) throws DAOException {
 		
+		System.out.println(controlModule);
+		
 		try {
 			ControlModule obj = sf.mf.controlModuleMapper.mapToObj(controlModule);
 

@@ -33,7 +33,7 @@ public class Pin {
 	@Column(name = "pin_id")
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private ControlModule controlModule;
 	
@@ -65,8 +65,14 @@ public class Pin {
 			cascade = CascadeType.ALL)
 	private List<PowerCondition> powerConditions;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pid_control_id", referencedColumnName = "id")
+//	@OneToMany(mappedBy = "controlModule",
+////			cascade = CascadeType.PERSIST,
+//			cascade=CascadeType.ALL,
+//			orphanRemoval = true,
+//			fetch = FetchType.EAGER)
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "pid_control_id")
 	private PIDControl pidControl;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

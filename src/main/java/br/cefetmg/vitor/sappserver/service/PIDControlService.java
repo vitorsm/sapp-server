@@ -36,8 +36,7 @@ public class PIDControlService implements ServiceServer<PIDControl> {
 			throw new PermissionException();
 		}
 		
-		t.setCreatedBy(currentUser);
-		t.setCreatedAt(new Date());
+		prepareToPersist(t, currentUser);
 		
 		dao.insert(t);
 	}
@@ -51,7 +50,8 @@ public class PIDControlService implements ServiceServer<PIDControl> {
 			throw new PermissionException();
 		}
 		
-		t.setModifiedAt(new Date());
+		prepareToPersist(t, currentUser);
+		
 		dao.update(t);
 	}
 
@@ -107,5 +107,12 @@ public class PIDControlService implements ServiceServer<PIDControl> {
 	@Override
 	public void prepareToPersist(PIDControl t, User user) {
 		
+		Date date = new Date();
+		if (t.getCreatedAt() == null) {
+			t.setCreatedAt(date);
+			t.setCreatedBy(user);
+		} else {
+			t.setModifiedAt(date);
+		}
 	}
 }

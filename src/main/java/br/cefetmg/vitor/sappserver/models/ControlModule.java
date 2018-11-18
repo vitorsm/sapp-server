@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -35,35 +34,12 @@ public class ControlModule extends User implements Serializable {
 	private Place place;
 	
 	@OneToMany(mappedBy = "controlModule",
-			cascade = CascadeType.ALL,
+//			cascade = CascadeType.PERSIST,
+			cascade=CascadeType.ALL,
 			orphanRemoval = true,
 			fetch = FetchType.EAGER)
 	private List<Pin> pins;
 	
-	
-//	public void mergePins(List<Pin> pins) {
-//		
-//		if (this.pins == null) {
-//			this.pins = new ArrayList<Pin>();
-//		}
-//		
-//		if (pins == null || pins.isEmpty()) {
-//			this.pins.removeAll(this.pins);
-//		} else {
-//			
-//			for (Pin pin : this.pins) {
-//				if (!pins.contains(pin)) {
-//					this.pins.remove(pin);
-//				}
-//			}
-//			
-//			for (Pin pin : pins) {
-//				if (!this.pins.contains(pin)) {
-//					this.pins.add(pin);
-//				}
-//			}
-//		}
-//	}
 	
 	public void mergePins(List<Pin> pins) {
 		
