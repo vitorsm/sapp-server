@@ -1,6 +1,5 @@
 package br.cefetmg.vitor.sappserver.mapper;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -30,9 +29,6 @@ public class MapperFacade {
 	
 	@Autowired
 	public PermissionMapper permissionMapper;
-	
-	@Autowired
-	public PIDControlMapper pidControlMapper;
 	
 	@Autowired
 	public PinHistoryMapper pinHistoryMapper;

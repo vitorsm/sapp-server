@@ -15,7 +15,6 @@ import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
 import br.cefetmg.vitor.sappserver.facade.SAPPFacade;
 import br.cefetmg.vitor.sappserver.models.Pin;
 import br.cefetmg.vitor.sappserver.models.PowerCondition;
-import br.cefetmg.vitor.sappserver.models.PIDControl;
 import br.cefetmg.vitor.sappserver.models.Permission;
 import br.cefetmg.vitor.sappserver.models.User;
 
@@ -38,14 +37,8 @@ public class PinService implements ServiceServer<Pin> {
 		}
 		
 		prepareToPersist(t, currentUser);
-		
-		PIDControl pidControl = t.getPidControl();
-		t.setPidControl(null);
-		
 		dao.insert(t);
 		
-		if (pidControl != null)
-			sf.pidControleService.insert(pidControl);
 	}
 
 	@Override
@@ -58,14 +51,7 @@ public class PinService implements ServiceServer<Pin> {
 		}
 		
 		prepareToPersist(t, currentUser);
-		
-		PIDControl pidControl = t.getPidControl();
-		t.setPidControl(null);
-		
 		dao.update(t);
-		
-		if (pidControl != null)
-			sf.pidControleService.update(pidControl);
 	}
 
 	@Override
@@ -123,10 +109,6 @@ public class PinService implements ServiceServer<Pin> {
 			t.setCreatedAt(new Date());
 			t.setCreatedBy(user);
 			
-			if (t.getPidControl() != null) {
-				t.getPidControl().setCreatedAt(new Date());
-				t.getPidControl().setCreatedBy(user);
-			}
 		} else {
 			t.setModifiedAt(new Date());
 		}

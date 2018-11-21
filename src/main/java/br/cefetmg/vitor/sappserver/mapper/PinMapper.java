@@ -3,6 +3,7 @@ package br.cefetmg.vitor.sappserver.mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.cefetmg.vitor.sappserver.dto.PIDControlDTO;
 import br.cefetmg.vitor.sappserver.dto.PinDTO;
 import br.cefetmg.vitor.sappserver.exceptions.DAOException;
 import br.cefetmg.vitor.sappserver.exceptions.PermissionException;
@@ -41,10 +42,15 @@ public class PinMapper extends Mapper<Pin, PinDTO>{
 			obj.mergePowerConditions(sf.mf.powerConditionMapper.mapToObj(dto.getPowerConditions()));
 			obj.setPowered(dto.isPowered());
 			obj.setSetPoint(dto.getSetPoint());
-			obj.setPidControl(sf.mf.pidControlMapper.mapToObj(dto.getPidControl()));
 			
-			if (obj.getPidControl() != null)
-				obj.getPidControl().setPin(obj);
+			if (dto.getPidControl() != null) {
+				obj.setKp(dto.getPidControl().getKp());
+				obj.setKi(dto.getPidControl().getKi());
+				obj.setKd(dto.getPidControl().getKd());
+				obj.setInput(sf.mf.pinMapper.mapToObj(dto.getPidControl().getInput()));
+				obj.setSampleTime(dto.getPidControl().getSampleTime());	
+			}
+			
 			
 			return obj;
 		} catch (DAOException e) {
@@ -67,11 +73,20 @@ public class PinMapper extends Mapper<Pin, PinDTO>{
 		dto.setModifiedAt(obj.getModifiedAt());
 		dto.setName(obj.getName());
 		dto.setNumber(obj.getNumber());
-		dto.setPidControl(sf.mf.pidControlMapper.mapToDto(obj.getPidControl()));
 		dto.setPinType(sf.mf.pinTypeMapper.mapToDto(obj.getPinType()));
 		dto.setPowerConditions(sf.mf.powerConditionMapper.mapToDto(obj.getPowerConditions()));
 		dto.setPowered(obj.isPowered());
 		dto.setSetPoint(obj.getSetPoint());
+		
+		if (obj.getInput() != null) {
+			PIDControlDTO pidControlDTO = new PIDControlDTO();
+			pidControlDTO.setKp(obj.getKp());
+			pidControlDTO.setKi(obj.getKi());
+			pidControlDTO.setKd(obj.getKd());
+			pidControlDTO.setSampleTime(obj.getSampleTime());
+			pidControlDTO.setInput(sf.mf.pinMapper.mapToDto(obj.getInput()));
+			dto.setPidControl(pidControlDTO);
+		}
 		
 		return dto;
 	}

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import br.cefetmg.vitor.sappserver.broker.InitBroker;
 import br.cefetmg.vitor.sappserver.mapper.MapperFacade;
-import br.cefetmg.vitor.sappserver.models.OperationType;
 import br.cefetmg.vitor.sappserver.service.AccessHistoryService;
 import br.cefetmg.vitor.sappserver.service.AuthenticateService;
 import br.cefetmg.vitor.sappserver.service.ControlModuleService;
@@ -14,7 +13,6 @@ import br.cefetmg.vitor.sappserver.service.DoorLockService;
 import br.cefetmg.vitor.sappserver.service.EventConditionService;
 import br.cefetmg.vitor.sappserver.service.EventService;
 import br.cefetmg.vitor.sappserver.service.OperationTypeService;
-import br.cefetmg.vitor.sappserver.service.PIDControlService;
 import br.cefetmg.vitor.sappserver.service.PermissionService;
 import br.cefetmg.vitor.sappserver.service.PinHistoryService;
 import br.cefetmg.vitor.sappserver.service.PinService;
@@ -54,9 +52,6 @@ public class SAPPFacade {
 	
 	@Autowired
 	public PermissionService permissionService;
-	
-	@Autowired
-	public PIDControlService pidControleService;
 	
 	@Autowired
 	public PinHistoryService pinHistoryService;

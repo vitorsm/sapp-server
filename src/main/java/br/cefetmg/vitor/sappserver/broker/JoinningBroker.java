@@ -88,8 +88,8 @@ public class JoinningBroker implements IJoinning {
 			
 			for (Pin pin : controlModule.getPins()) {
 				
-				if (pin.getPidControl() != null) {
-					String topicName = TopicUtils.generateTopicNameByPin(pin.getPidControl().getInput());
+				if (pin.getInput() != null) {
+					String topicName = TopicUtils.generateTopicNameByPin(pin.getInput());
 					if (topicName != null) {
 						broker.addClientIntoTopic(client, new Topic(topicName));
 					}
@@ -147,11 +147,10 @@ public class JoinningBroker implements IJoinning {
 					break;
 			}
 			
-			if (pin.getPidControl() != null) {
-				param.kp = pin.getPidControl().getKp();
-				param.ki = pin.getPidControl().getKi();
-				param.kd = pin.getPidControl().getKd();
-			}
+			param.kp = pin.getKp();
+			param.ki = pin.getKi();
+			param.kd = pin.getKd();
+			param.inputId = pin.getInput() != null ? pin.getInput().getId() : 0;
 			
 			param.sampleTime = (int) pin.getHistorySampleTime();
 			param.setpoint = pin.getSetPoint();
