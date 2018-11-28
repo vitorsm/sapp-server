@@ -9,6 +9,7 @@ public class TopicUtils {
 		
 		if (pin == null) return null;
 		
-		return "pin:" + pin.getId();
+//		return "pin:" + pin.getId();
+		return "" + pin.getId();
 	}
 }
